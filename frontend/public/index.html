@@ -1,11 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OpenBook Store</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenBook Store — Ebooks &amp; Research, Sourced Legitimately</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+
+<div id="splash">
+  <div class="book-anim">
+    <div class="cover left"></div>
+    <div class="cover right"></div>
+    <div class="pageline" style="left:50%; transform:translateX(-50%);"></div>
+  </div>
+  <span class="brandmark">OpenBook Store</span>
+</div>
+
+<div id="site-header"></div>
+
+<section class="relative overflow-hidden border-b border-sand">
+  <div class="absolute inset-0" style="background-image:linear-gradient(100deg, rgba(34,29,24,.88), rgba(34,29,24,.55)), url('https://images.unsplash.com/photo-1673162802561-dd53ec4be651?fm=jpg&q=70&w=1800&auto=format&fit=crop'); background-size:cover; background-position:center"></div>
+  <div class="relative max-w-6xl mx-auto px-6 py-24 md:py-32">
+    <span class="text-gold font-mono text-xs tracking-widest uppercase">Legitimately Sourced Ebooks &amp; Research</span>
+    <h1 class="font-serif font-semibold text-4xl md:text-6xl text-cream mt-3 max-w-xl leading-tight">A well-kept shelf, built in the open.</h1>
+    <p class="text-cream/80 mt-4 max-w-md">Public domain classics, open-access research, and licensed titles — organized, honest, and ready to read.</p>
+    <div class="mt-8 flex gap-3">
+      <a href="catalog.html" class="bg-rust text-cream px-6 py-3 nav-link hover:bg-rustdeep">Browse Catalog</a>
+      <a href="library.html" class="border border-cream/50 text-cream px-6 py-3 nav-link hover:border-cream">Free Library</a>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-6 py-16">
+  <div class="flex justify-between items-end mb-6 border-b border-sand pb-4">
+    <h2 class="font-serif font-semibold text-2xl">Featured this month</h2>
+    <a href="catalog.html" class="nav-link text-rust">View full catalog &rarr;</a>
+  </div>
+  <div id="featuredGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+</section>
+
+<section class="grid md:grid-cols-3 border-t border-sand">
+  <a href="library.html" class="p-8 border-r border-b md:border-b-0 border-sand hover:bg-creamdim">
+    <span class="font-mono text-xs text-rust">FREE TIER</span>
+    <h3 class="font-serif font-semibold text-lg mt-2">Free Library</h3>
+    <p class="text-sm text-inksoft mt-1">Public domain classics, no cost, no account needed.</p>
+  </a>
+  <a href="offers.html" class="p-8 border-r border-b md:border-b-0 border-sand hover:bg-creamdim">
+    <span class="font-mono text-xs text-rust">THIS WEEK</span>
+    <h3 class="font-serif font-semibold text-lg mt-2">Discounted Offers</h3>
+    <p class="text-sm text-inksoft mt-1">Limited-time prices on licensed and original titles.</p>
+  </a>
+  <a href="about.html" class="p-8 border-sand hover:bg-creamdim">
+    <span class="font-mono text-xs text-rust">OUR STORY</span>
+    <h3 class="font-serif font-semibold text-lg mt-2">About OpenBook Store</h3>
+    <p class="text-sm text-inksoft mt-1">Why legitimate sourcing is the whole point.</p>
+  </a>
+</section>
+
+<div id="site-footer"></div>
+
+<div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
+  <div class="flex justify-between items-center p-5 border-b border-sand">
+    <span class="font-serif font-semibold">Your Cart</span>
+    <button onclick="toggleCart()" class="text-inksoft">Close</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+  <div class="p-5 border-t border-sand">
+    <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
+    <button onclick="checkout()" class="w-full bg-rust text-cream py-3 nav-link hover:bg-rustdeep">Checkout</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  renderHeader('index.html'); renderFooter();
+  document.getElementById('featuredGrid').innerHTML = books.slice(0,4).map(bookCard).join('');
+</script>
+</body>
 </html>
