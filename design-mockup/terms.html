@@ -3,57 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms & Conditions — OpenBook Store</title>
+<title>Terms &amp; Conditions — OpenBook Store</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<script>
-  tailwind.config = { theme: { extend: {
-    colors: { cream:'#F4EFE4', ink:'#221D18', inksoft:'#5C5348', rust:'#A8431C', sand:'#D6C9AE' },
-    fontFamily: { serif:['Fraunces','serif'], sans:['Inter','sans-serif'] }
-  } } }
-</script>
-<style> body{font-family:'Inter',sans-serif} .font-serif{font-family:'Fraunces',serif} </style>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-cream text-ink">
-  <header class="border-b border-sand">
-    <div class="max-w-3xl mx-auto px-6 py-5 flex justify-between items-center">
-      <a href="index.html" class="font-serif font-semibold">OpenBook Store</a>
-      <a href="index.html" class="text-sm text-inksoft hover:text-rust">&larr; Back to store</a>
-    </div>
-  </header>
 
-  <main class="max-w-3xl mx-auto px-6 py-14">
-    <h1 class="font-serif font-semibold text-3xl mb-8 border-b border-sand pb-6">Terms &amp; Conditions</h1>
+<div id="site-header"></div>
 
-    <div class="space-y-8 text-sm text-inksoft leading-relaxed">
-      <div>
-        <h2 class="font-serif font-semibold text-ink text-lg mb-2">1. Content sourcing</h2>
-        <p>All titles on OpenBook Store are sourced legitimately — public domain works, open-access research, or licensed and original content. No pirated or unauthorized material is distributed.</p>
-      </div>
-      <div>
-        <h2 class="font-serif font-semibold text-ink text-lg mb-2">2. Purchases &amp; access</h2>
-        <p>Paid titles grant a personal, non-transferable license to download and read the file. Purchased books remain accessible from your account for re-download.</p>
-      </div>
-      <div>
-        <h2 class="font-serif font-semibold text-ink text-lg mb-2">3. Free Library tier</h2>
-        <p>Books marked "Free" are public domain or open-access works offered at no cost, with no purchase or account required to download.</p>
-      </div>
-      <div>
-        <h2 class="font-serif font-semibold text-ink text-lg mb-2">4. Discounted offers</h2>
-        <p>Discounted prices are limited-time and may change without notice. The price shown at checkout is the price charged.</p>
-      </div>
-      <div>
-        <h2 class="font-serif font-semibold text-ink text-lg mb-2">5. Refunds</h2>
-        <p>Because ebook files are delivered digitally and instantly, purchases are generally final. Contact us if a file is corrupted or inaccessible.</p>
-      </div>
-      <div>
-        <h2 class="font-serif font-semibold text-ink text-lg mb-2">6. Contact</h2>
-        <p>Questions about these terms can be sent to <span class="text-rust">desmondkiprotich37@gmail.com</span>.</p>
-      </div>
-    </div>
-  </main>
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Terms &amp; Conditions</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026</p>
 
-  <footer class="border-t border-sand py-6 text-center text-xs text-inksoft">&copy; 2026 OpenBook Store</footer>
+  <div class="terms-body columns-1 md:columns-2 gap-8">
+
+    <div class="clause"><h2>1. Acceptance of Terms</h2><p>By accessing or using OpenBook Store, you agree to be bound by these Terms &amp; Conditions. If you do not agree, do not use the service.</p></div>
+
+    <div class="clause"><h2>2. Content Sourcing</h2><p>All titles are sourced legitimately: public domain works, open-access research, or licensed and original content. We do not distribute pirated or unauthorized material. Each listing indicates its source category.</p></div>
+
+    <div class="clause"><h2>3. Accounts</h2><p>You must provide accurate information when creating an account. You are responsible for maintaining the confidentiality of your login credentials and for all activity under your account.</p></div>
+
+    <div class="clause"><h2>4. Purchases &amp; Payment</h2><p>Paid titles are charged at the price displayed at checkout. Prices are listed in USD unless stated otherwise. Payment processing is handled by a third-party provider; we do not store full card details.</p></div>
+
+    <div class="clause"><h2>5. Free Library Tier</h2><p>Titles marked "Free" are public domain or open-access works offered at no cost. No purchase or payment method is required to access them.</p></div>
+
+    <div class="clause"><h2>6. Discounted Offers</h2><p>Discounted prices are limited-time and may be changed, extended, or withdrawn without notice. The price shown at the time of checkout is the price charged, regardless of later changes.</p></div>
+
+    <div class="clause"><h2>7. Digital Delivery &amp; Access</h2><p>Purchased titles are delivered as downloadable files (EPUB or PDF) tied to your account. You may re-download purchased titles from your account at any time.</p></div>
+
+    <div class="clause"><h2>8. License Grant</h2><p>Purchasing a title grants a personal, non-exclusive, non-transferable license to read the content. It does not grant redistribution, resale, or commercial reproduction rights unless separately licensed.</p></div>
+
+    <div class="clause"><h2>9. Refund Policy</h2><p>Because digital files are delivered instantly, purchases are generally final. Refunds may be issued at our discretion for corrupted files, duplicate charges, or non-delivery, if reported within 14 days.</p></div>
+
+    <div class="clause"><h2>10. Prohibited Use</h2><p>You may not redistribute purchased files, circumvent access controls, scrape the catalog at scale, or use the platform for any unlawful purpose.</p></div>
+
+    <div class="clause"><h2>11. Intellectual Property</h2><p>The OpenBook Store name, logo, and platform design are the property of OpenBook Store. Public domain and open-access content retains its original licensing terms.</p></div>
+
+    <div class="clause"><h2>12. User Conduct</h2><p>Messages submitted through the contact form or reviews must not contain harassment, spam, or unlawful content. We reserve the right to remove such submissions.</p></div>
+
+    <div class="clause" id="privacy"><h2>13. Privacy Policy</h2><p>We collect account information, purchase history, and contact form submissions solely to operate the platform. We do not sell personal data to third parties. Payment details are processed by our payment provider, not stored by us directly.</p></div>
+
+    <div class="clause"><h2>14. Cookies</h2><p>The platform may use cookies or local storage to remember your cart and session. Disabling these may limit functionality such as cart persistence.</p></div>
+
+    <div class="clause" id="licensing"><h2>15. Content Licensing Terms</h2><p>Public domain titles follow their jurisdiction's public domain status. Open-access research follows its original publication license (e.g., CC-BY). Licensed titles display their specific terms on the product page.</p></div>
+
+    <div class="clause"><h2>16. Disclaimers</h2><p>Content is provided "as is." We do not guarantee uninterrupted access, complete accuracy of research metadata, or fitness for a particular purpose.</p></div>
+
+    <div class="clause"><h2>17. Limitation of Liability</h2><p>To the extent permitted by law, OpenBook Store is not liable for indirect, incidental, or consequential damages arising from use of the platform.</p></div>
+
+    <div class="clause"><h2>18. Termination</h2><p>We may suspend or terminate accounts that violate these terms. You may close your account at any time by contacting support.</p></div>
+
+    <div class="clause"><h2>19. Changes to These Terms</h2><p>We may update these terms periodically. Continued use of the platform after changes constitutes acceptance of the revised terms.</p></div>
+
+    <div class="clause"><h2>20. Governing Law</h2><p>These terms are governed by applicable local law in the jurisdiction where OpenBook Store operates, without regard to conflict-of-law principles.</p></div>
+
+    <div class="clause"><h2>21. Contact</h2><p>Questions about these terms: desmondkiprotich37@gmail.com or +245 742 118 992. See our <a href="contact.html" class="text-rust">Contact page</a> for the full support form.</p></div>
+
+  </div>
+
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="shared.js"></script>
+<script>renderHeader('terms.html'); renderFooter();</script>
 </body>
 </html>

@@ -5,22 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — OpenBook Store</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<script>
-  tailwind.config = { theme: { extend: {
-    colors: { cream:'#F4EFE4', ink:'#221D18', inksoft:'#5C5348', rust:'#A8431C', sand:'#D6C9AE' },
-    fontFamily: { serif:['Fraunces','serif'], sans:['Inter','sans-serif'] }
-  } } }
-</script>
-<style> body{font-family:'Inter',sans-serif} .font-serif{font-family:'Fraunces',serif} </style>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-cream text-ink">
 
   <header class="border-b border-sand bg-ink text-cream">
     <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
       <span class="font-serif font-semibold">OpenBook Store — Admin</span>
-      <span class="text-xs text-cream/60">Not linked publicly — bookmark this URL</span>
+      <span class="text-xs text-cream/60 font-mono">Not linked publicly — bookmark this URL</span>
     </div>
   </header>
 
@@ -58,7 +51,7 @@
       <div class="flex justify-between items-center bg-white border border-sand p-4 text-sm">
         <div>
           <p class="font-serif font-semibold">${b.title} <span class="text-inksoft font-normal">— ${b.author}</span></p>
-          <p class="text-xs text-inksoft">${b.category} · ${b.tier} · $${b.price}${b.oldPrice ? ' (was $'+b.oldPrice+')' : ''}</p>
+          <p class="text-xs text-inksoft font-mono">${b.category} · ${b.tier} · $${b.price}${b.oldPrice ? ' (was $'+b.oldPrice+')' : ''}</p>
         </div>
         <button onclick="removeBook(${i})" class="text-rust text-xs">Remove</button>
       </div>`).join('') || '<p class="text-inksoft text-sm">No books added yet.</p>';
@@ -77,7 +70,6 @@
   });
 
   function removeBook(i){ adminBooks.splice(i,1); localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks)); renderList(); }
-
   renderList();
 </script>
 </body>

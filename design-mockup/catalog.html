@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalog — OpenBook Store</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+
+<div id="splash">
+  <div class="book-anim"><div class="cover left"></div><div class="cover right"></div></div>
+  <span class="brandmark">OpenBook Store</span>
+</div>
+
+<div id="site-header"></div>
+
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h1 class="font-serif font-semibold text-3xl mb-2">Full Catalog</h1>
+  <p class="text-inksoft text-sm mb-8">Every title currently available — public domain, open access, and licensed.</p>
+  <div id="catFilters" class="flex gap-2 flex-wrap mb-8"></div>
+  <div id="catalogGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
+</section>
+
+<div id="site-footer"></div>
+
+<div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
+  <div class="flex justify-between items-center p-5 border-b border-sand">
+    <span class="font-serif font-semibold">Your Cart</span>
+    <button onclick="toggleCart()" class="text-inksoft">Close</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+  <div class="p-5 border-t border-sand">
+    <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
+    <button onclick="checkout()" class="w-full bg-rust text-cream py-3 nav-link hover:bg-rustdeep">Checkout</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  renderHeader('catalog.html'); renderFooter();
+  const cats = ['All', ...new Set(books.map(b=>b.category))];
+  document.getElementById('catFilters').innerHTML = cats.map(c=>`<button onclick="filterCat('${c}')" class="border border-sand px-4 py-1.5 nav-link hover:border-rust hover:text-rust">${c}</button>`).join('');
+  function filterCat(c){ document.getElementById('catalogGrid').innerHTML = books.filter(b=> c==='All'||b.category===c).map(bookCard).join(''); }
+  filterCat('All');
+</script>
+</body>
+</html>

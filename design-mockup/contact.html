@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact &amp; Help — OpenBook Store</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+
+<div id="splash">
+  <div class="book-anim"><div class="cover left"></div><div class="cover right"></div></div>
+  <span class="brandmark">OpenBook Store</span>
+</div>
+
+<div id="site-header"></div>
+
+<section class="max-w-5xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12">
+  <div>
+    <span class="font-mono text-xs text-rust uppercase tracking-widest">Help &amp; Support</span>
+    <h1 class="font-serif font-semibold text-3xl mt-2 mb-6">Get in touch</h1>
+    <p class="text-sm text-inksoft mb-2">Email: <span class="font-mono">desmondkiprotich37@gmail.com</span></p>
+    <p class="text-sm text-inksoft mb-6">Phone: <span class="font-mono">+245 742 118 992</span></p>
+    <div class="flex gap-3 mb-10">
+      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">X</a>
+      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">IG</a>
+      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">FB</a>
+      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">in</a>
+    </div>
+    <div id="faq">
+      <h2 class="font-serif font-semibold text-lg mb-3 border-t border-sand pt-6">Frequently asked</h2>
+      <div class="space-y-4 text-sm">
+        <div><p class="font-semibold">Are free books really free?</p><p class="text-inksoft">Yes — public domain and open-access titles require no payment or account.</p></div>
+        <div><p class="font-semibold">Can I get a refund?</p><p class="text-inksoft">See our Terms &amp; Conditions for the refund policy on paid titles.</p></div>
+        <div><p class="font-semibold">How do I report a broken download?</p><p class="text-inksoft">Email us with the book title and we'll fix it promptly.</p></div>
+      </div>
+    </div>
+  </div>
+  <form onsubmit="event.preventDefault(); alert('Message sent — we will reply by email.')" class="space-y-3 bg-white border border-sand p-6 h-fit">
+    <input required placeholder="Your name" class="w-full border border-sand bg-cream px-4 py-3 text-sm">
+    <input required type="email" placeholder="Your email" class="w-full border border-sand bg-cream px-4 py-3 text-sm">
+    <select class="w-full border border-sand bg-cream px-4 py-3 text-sm">
+      <option>General question</option><option>Report a problem</option><option>Leadership / partnership</option><option>Careers</option>
+    </select>
+    <textarea required placeholder="Message" rows="5" class="w-full border border-sand bg-cream px-4 py-3 text-sm"></textarea>
+    <button class="bg-ink text-cream px-6 py-3 nav-link hover:bg-rust w-full">Send Message</button>
+  </form>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="shared.js"></script>
+<script>renderHeader('contact.html'); renderFooter();</script>
+</body>
+</html>
