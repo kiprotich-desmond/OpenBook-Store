@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — OpenBook Store</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { cream:'#F4EFE4', ink:'#221D18', inksoft:'#5C5348', rust:'#A8431C', sand:'#D6C9AE' },
+    fontFamily: { serif:['Fraunces','serif'], sans:['Inter','sans-serif'] }
+  } } }
+</script>
+<style> body{font-family:'Inter',sans-serif} .font-serif{font-family:'Fraunces',serif} </style>
+</head>
+<body class="bg-cream text-ink">
+
+  <header class="border-b border-sand bg-ink text-cream">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+      <span class="font-serif font-semibold">OpenBook Store — Admin</span>
+      <span class="text-xs text-cream/60">Not linked publicly — bookmark this URL</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-10">
+    <div class="bg-rust/10 border border-rust text-rust text-xs p-4 mb-8">
+      This page is only hidden by not being linked anywhere — it is not actually secured. Anyone with the URL can open it.
+      Real admin protection needs a login check on your backend before this goes live.
+    </div>
+
+    <h1 class="font-serif font-semibold text-2xl mb-6">Add a book</h1>
+    <form id="bookForm" class="grid md:grid-cols-2 gap-4 mb-12 bg-white border border-sand p-6">
+      <input required id="f_title" placeholder="Title" class="border border-sand px-4 py-3 text-sm">
+      <input required id="f_author" placeholder="Author" class="border border-sand px-4 py-3 text-sm">
+      <input required id="f_category" placeholder="Category (e.g. Fiction)" class="border border-sand px-4 py-3 text-sm">
+      <select id="f_tier" class="border border-sand px-4 py-3 text-sm">
+        <option value="catalog">Catalog (paid)</option>
+        <option value="library">Free Library</option>
+        <option value="offer">Discounted Offer</option>
+      </select>
+      <input id="f_price" type="number" min="0" step="0.5" placeholder="Price ($)" class="border border-sand px-4 py-3 text-sm">
+      <input id="f_oldprice" type="number" min="0" step="0.5" placeholder="Original price (if discounted)" class="border border-sand px-4 py-3 text-sm">
+      <input id="f_cover" placeholder="Cover image URL" class="border border-sand px-4 py-3 text-sm md:col-span-2">
+      <button class="bg-ink text-cream px-6 py-3 text-sm hover:bg-rust md:col-span-2">Add Book</button>
+    </form>
+
+    <h2 class="font-serif font-semibold text-xl mb-4">Uploaded books (this browser only)</h2>
+    <div id="adminList" class="space-y-3"></div>
+  </main>
+
+<script>
+  let adminBooks = JSON.parse(localStorage.getItem('obs_admin_books') || '[]');
+
+  function renderList(){
+    document.getElementById('adminList').innerHTML = adminBooks.map((b,i)=>`
+      <div class="flex justify-between items-center bg-white border border-sand p-4 text-sm">
+        <div>
+          <p class="font-serif font-semibold">${b.title} <span class="text-inksoft font-normal">— ${b.author}</span></p>
+          <p class="text-xs text-inksoft">${b.category} · ${b.tier} · $${b.price}${b.oldPrice ? ' (was $'+b.oldPrice+')' : ''}</p>
+        </div>
+        <button onclick="removeBook(${i})" class="text-rust text-xs">Remove</button>
+      </div>`).join('') || '<p class="text-inksoft text-sm">No books added yet.</p>';
+  }
+
+  document.getElementById('bookForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    adminBooks.push({
+      title: f_title.value, author: f_author.value, category: f_category.value,
+      tier: f_tier.value, price: parseFloat(f_price.value) || 0,
+      oldPrice: f_oldprice.value ? parseFloat(f_oldprice.value) : null,
+      cover: f_cover.value || 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&q=60&auto=format&fit=crop'
+    });
+    localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks));
+    this.reset(); renderList();
+  });
+
+  function removeBook(i){ adminBooks.splice(i,1); localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks)); renderList(); }
+
+  renderList();
+</script>
+</body>
+</html>
