@@ -23,6 +23,14 @@ router.get('/', (req, res) => {
   res.json(db.books);
 });
 
+// ---------- Admin: category counts (for Catalog Overview page) ----------
+router.get('/admin/category-counts', requireAdmin, (req, res) => {
+  const db = readDB();
+  const counts = {};
+  db.books.forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
+  res.json({ total: db.books.length, byCategory: counts });
+});
+
 router.get('/:id', (req, res) => {
   const db = readDB();
   const book = db.books.find(b => b.id === Number(req.params.id));
@@ -88,14 +96,6 @@ router.delete('/:id', requireAdmin, (req, res) => {
   if (db.books.length === before) return res.status(404).json({ error: 'Book not found.' });
   writeDB(db);
   res.json({ deleted: true });
-});
-
-// ---------- Admin: category counts (for Catalog Overview page) ----------
-router.get('/admin/category-counts', requireAdmin, (req, res) => {
-  const db = readDB();
-  const counts = {};
-  db.books.forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
-  res.json({ total: db.books.length, byCategory: counts });
 });
 
 module.exports = router;
