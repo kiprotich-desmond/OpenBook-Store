@@ -34,7 +34,11 @@ body{font-family:'Sora',sans-serif; background:var(--cream); color:var(--ink);}
 .terms-body p, .terms-body li{font-size:12.5px; line-height:1.55; color:var(--inksoft); margin-bottom:6px;}
 .terms-body .clause{margin-bottom:10px; break-inside:avoid;}
 
-/* ---------- Mobile bottom tab bar ---------- */
-.tabbar{position:fixed; bottom:0; left:0; right:0; background:var(--cream); border-top:1px solid var(--sand); display:flex; z-index:40;}
-.tabbar a{flex:1; text-align:center; padding:9px 2px; font-size:10px; font-weight:600; color:var(--inksoft);}
-.tabbar a.active{color:var(--rust);}
+/* ---------- Mobile navigation ---------- */
+.mobile-menu-button{width:40px; height:40px; padding:9px; border:1px solid var(--sand);}
+.mobile-menu-button span{display:block; height:2px; margin:4px 0; background:var(--ink);}
+.mobile-menu{display:none; padding:4px 24px 12px; border-top:1px solid var(--sand); background:var(--cream);}
+@media (max-width:767px){.mobile-menu.open{display:grid;}}
+.mobile-menu a{padding:12px 0; border-bottom:1px solid var(--sand); font-size:13px; font-weight:600; color:var(--inksoft);}
+.mobile-menu a:last-child{border-bottom:0;}
+.mobile-menu a.active{color:var(--rust);}
