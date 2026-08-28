@@ -1,5 +1,7 @@
 {
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/frontend/index.html" }
+    { "source": "/admin-login", "destination": "/design-mockup/admin-login.html" },
+    { "source": "/admin", "destination": "/design-mockup/admin.html" }
   ]
 }
