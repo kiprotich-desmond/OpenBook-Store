@@ -50,7 +50,7 @@ function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
 
 function starBtn(id){
   const on = favorites.includes(id);
-  return `<button onclick="toggleFav(event, ${id})" class="absolute top-2 right-2 w-7 h-7 flex items-center justify-center bg-cream/90 text-lg ${on?'text-gold':'text-inksoft'}">&#9733;</button>`;
+  return `<button onclick="toggleFav(event, ${id})" aria-label="${on?'Remove from favourites':'Add to favourites'}" aria-pressed="${on}" class="absolute top-2 right-2 w-7 h-7 flex items-center justify-center bg-cream/90 text-lg ${on?'text-gold':'text-inksoft'}">&#9733;</button>`;
 }
 
 function bookCard(b){
@@ -86,7 +86,12 @@ function removeFromCart(i){ cart.splice(i,1); save('obs_cart', cart); updateCart
 function toggleFav(e, id){ e.preventDefault();
   favorites = favorites.includes(id) ? favorites.filter(x=>x!==id) : [...favorites, id];
   save('obs_favorites', favorites);
-  document.querySelectorAll('[data-refresh]').forEach(fn=>{}); location.reload();
+  const on = favorites.includes(id);
+  e.currentTarget.classList.toggle('text-gold', on);
+  e.currentTarget.classList.toggle('text-inksoft', !on);
+  e.currentTarget.setAttribute('aria-pressed', on);
+  e.currentTarget.setAttribute('aria-label', on ? 'Remove from favourites' : 'Add to favourites');
+  if(document.getElementById('favGrid')) location.reload();
 }
 function toggleWish(e, id){ e.preventDefault();
   wishlist = wishlist.includes(id) ? wishlist.filter(x=>x!==id) : [...wishlist, id];

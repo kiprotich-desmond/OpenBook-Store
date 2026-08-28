@@ -50,6 +50,7 @@
   const id = parseInt(new URLSearchParams(location.search).get('id'));
   const b = books.find(x=>x.id===id);
   if(b){
+    const favoriteOn = favorites.includes(b.id);
     const priceHtml = b.oldPrice ? `<span class="line-through text-inksoft mr-2">$${b.oldPrice}</span><span class="text-rust font-semibold font-mono text-xl">$${b.price}</span>` : (b.price===0 ? '<span class="text-good font-semibold font-mono text-xl">Free</span>' : `<span class="font-semibold font-mono text-xl">$${b.price}</span>`);
     document.getElementById('bookDetail').innerHTML = `
     <div class="grid md:grid-cols-2 gap-10">
@@ -68,7 +69,7 @@
         <div class="flex gap-3">
           <button onclick="handleAdd(event, ${b.id})" class="chip-cart px-6 py-3 nav-link">Add to Cart</button>
           <button onclick="toggleWish(event, ${b.id})" class="border border-ink px-6 py-3 nav-link">+ Wishlist</button>
-          <button onclick="toggleFav(event, ${b.id})" class="border border-ink px-4 py-3 text-lg">&#9733;</button>
+          <button onclick="toggleFav(event, ${b.id})" aria-label="${favoriteOn?'Remove from favourites':'Add to favourites'}" aria-pressed="${favoriteOn}" class="border border-ink px-4 py-3 text-lg ${favoriteOn?'text-gold':'text-inksoft'}">&#9733;</button>
         </div>
       </div>
     </div>`;
