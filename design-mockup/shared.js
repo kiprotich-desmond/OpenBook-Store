@@ -47,13 +47,21 @@ let favorites = JSON.parse(localStorage.getItem('obs_favorites') || '[]');
 let loggedIn = localStorage.getItem('obs_logged_in') === '1';
 
 function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+function isFreeBook(book){ return book && book.tier === 'library'; }
+
+const eligibleCart = [...new Set(cart.filter(id => !isFreeBook(books.find(book => book.id === id))))];
+if(eligibleCart.length !== cart.length){ cart = eligibleCart; save('obs_cart', cart); }
+const eligibleWishlist = wishlist.filter(id => !isFreeBook(books.find(book => book.id === id)));
+if(eligibleWishlist.length !== wishlist.length){ wishlist = eligibleWishlist; save('obs_wishlist', wishlist); }
 
 function starBtn(id){
   const on = favorites.includes(id);
-  return `<button onclick="toggleFav(event, ${id})" class="absolute top-2 right-2 w-7 h-7 flex items-center justify-center bg-cream/90 text-lg ${on?'text-gold':'text-inksoft'}">&#9733;</button>`;
+  return `<button onclick="toggleFav(event, ${id})" aria-label="${on?'Remove from favourites':'Add to favourites'}" aria-pressed="${on}" class="absolute top-2 right-2 w-7 h-7 flex items-center justify-center bg-cream/90 text-lg ${on?'text-gold':'text-inksoft'}">&#9733;</button>`;
 }
 
 function bookCard(b){
+  const freeBook = isFreeBook(b);
+  const inCart = cart.includes(b.id);
   const priceHtml = b.oldPrice
     ? `<span class="line-through text-inksoft text-xs mr-1">$${b.oldPrice}</span><span class="text-rust font-semibold font-mono">$${b.price}</span>`
     : (b.price === 0 ? `<span class="text-good font-semibold font-mono">Free</span>` : `<span class="font-semibold font-mono">$${b.price}</span>`);
@@ -68,8 +76,8 @@ function bookCard(b){
       <div class="flex justify-between items-center gap-2">
         <span class="text-sm">${priceHtml}</span>
         <div class="flex gap-1">
-          <button onclick="toggleWish(event, ${b.id})" class="text-[11px] border border-ink px-2 py-1.5 hover:bg-ink hover:text-cream">+ Wish</button>
-          <button onclick="handleAdd(event, ${b.id})" class="text-[11px] chip-cart px-2 py-1.5">Add</button>
+          <button onclick="toggleWish(event, ${b.id})" class="text-[11px] border px-2 py-1.5 ${freeBook?'border-sand text-inksoft cursor-not-allowed':'border-ink hover:bg-ink hover:text-cream'}" ${freeBook?'disabled title="Free books cannot be wishlisted"':''}>${freeBook?'Wish unavailable':'+ Wish'}</button>
+          <button data-cart-id="${b.id}" data-add-label="Add" onclick="handleAdd(event, ${b.id})" class="text-[11px] px-2 py-1.5 ${freeBook||inCart?'border border-sand text-inksoft cursor-not-allowed':'chip-cart'}" ${freeBook||inCart?`disabled title="${freeBook?'Free books do not use the cart':'Already in cart'}"`:''}>${freeBook?'Free access':inCart?'In Cart':'Add'}</button>
         </div>
       </div>
     </div>
@@ -78,17 +86,39 @@ function bookCard(b){
 function handleAdd(e, id){
   e.preventDefault();
   const b = books.find(x=>x.id===id);
+  if(isFreeBook(b)) return;
+  if(cart.includes(id)) return;
   if(b.price > 0 && !loggedIn){ showLoginGate(); return; }
-  addToCart(id);
+  if(addToCart(id)) updateCartButtons(id);
 }
-function addToCart(id){ cart.push(id); save('obs_cart', cart); updateCartUI(); openCart(); }
-function removeFromCart(i){ cart.splice(i,1); save('obs_cart', cart); updateCartUI(); }
+function addToCart(id){
+  if(isFreeBook(books.find(book=>book.id===id)) || cart.includes(id)) return false;
+  cart.push(id); save('obs_cart', cart); updateCartUI(); openCart();
+  return true;
+}
+function updateCartButtons(id){
+  const inCart = cart.includes(id);
+  document.querySelectorAll(`[data-cart-id="${id}"]`).forEach(button => {
+    button.disabled = inCart;
+    button.title = inCart ? 'Already in cart' : '';
+    button.textContent = inCart ? 'In Cart' : button.dataset.addLabel;
+    button.classList.toggle('chip-cart', !inCart);
+    ['border', 'border-sand', 'text-inksoft', 'cursor-not-allowed'].forEach(name => button.classList.toggle(name, inCart));
+  });
+}
+function removeFromCart(i){ const [id] = cart.splice(i,1); save('obs_cart', cart); updateCartUI(); updateCartButtons(id); }
 function toggleFav(e, id){ e.preventDefault();
   favorites = favorites.includes(id) ? favorites.filter(x=>x!==id) : [...favorites, id];
   save('obs_favorites', favorites);
-  document.querySelectorAll('[data-refresh]').forEach(fn=>{}); location.reload();
+  const on = favorites.includes(id);
+  e.currentTarget.classList.toggle('text-gold', on);
+  e.currentTarget.classList.toggle('text-inksoft', !on);
+  e.currentTarget.setAttribute('aria-pressed', on);
+  e.currentTarget.setAttribute('aria-label', on ? 'Remove from favourites' : 'Add to favourites');
+  if(document.getElementById('favGrid')) location.reload();
 }
 function toggleWish(e, id){ e.preventDefault();
+  if(isFreeBook(books.find(book=>book.id===id))) return;
   wishlist = wishlist.includes(id) ? wishlist.filter(x=>x!==id) : [...wishlist, id];
   save('obs_wishlist', wishlist);
   alert(wishlist.includes(id) ? 'Added to wishlist.' : 'Removed from wishlist.');
@@ -139,17 +169,27 @@ function renderHeader(active){
       <div class="flex items-center gap-2">
         <a href="catalog.html" class="hidden sm:inline-block text-inksoft"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a>
         <button onclick="toggleCart()" class="chip-cart px-4 py-2 nav-link">Cart <span id="cartCount" class="ml-1">0</span></button>
+        <button class="mobile-menu-button md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation" onclick="toggleMobileMenu(this)">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
+    <nav id="mobile-menu" class="mobile-menu md:hidden" aria-label="Mobile navigation">
+      ${NAV.map(n=>`<a href="${n.href}" class="${active===n.href?'active':''}">${n.label}</a>`).join('')}
+    </nav>
   </header>
-  <nav class="tabbar md:hidden">
-    ${NAV.map(n=>`<a href="${n.href}" class="${active===n.href?'active':''}">${n.label}</a>`).join('')}
-  </nav>`;
+  `;
+}
+
+function toggleMobileMenu(button){
+  const menu = document.getElementById('mobile-menu');
+  const isOpen = menu.classList.toggle('open');
+  button.setAttribute('aria-expanded', isOpen);
 }
 
 function renderFooter(){
   document.getElementById('site-footer').innerHTML = `
-  <footer class="border-t border-sand bg-creamdim pb-16 md:pb-0">
+  <footer class="border-t border-sand bg-creamdim">
     <div class="max-w-6xl mx-auto px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-8">
       <div>
         <p class="font-serif font-semibold text-sm mb-3">Company</p>

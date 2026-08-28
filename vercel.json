@@ -1,7 +1,0 @@
-{
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/admin-login", "destination": "/design-mockup/admin-login.html" },
-    { "source": "/admin", "destination": "/design-mockup/admin.html" }
-  ]
-}
