@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Refund Policy — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,19 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Refund Policy</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026 &middot; Applies internationally</p>
+  <div class="terms-body columns-1 md:columns-2 gap-8">
+    <div class="clause"><h2>1. General Policy</h2><p>Because digital files are delivered instantly, all sales are generally final once a download link has been issued.</p></div>
+    <div class="clause"><h2>2. Eligible Cases</h2><p>Refunds may be issued at our discretion for corrupted files, duplicate charges, or confirmed non-delivery.</p></div>
+    <div class="clause"><h2>3. Request Window</h2><p>Refund requests must be submitted within 14 days of purchase via the Contact page.</p></div>
+    <div class="clause"><h2>4. Processing Time</h2><p>Approved refunds are returned to your original payment method within 5–10 business days, subject to your bank or provider's timing.</p></div>
+    <div class="clause"><h2>5. Free Titles</h2><p>Free Library titles are not eligible for refunds, as no payment was made.</p></div>
+    <div class="clause"><h2>6. International Consumer Rights</h2><p>Nothing in this policy limits any statutory refund rights you may have under the consumer protection law of your own country.</p></div>
+    <div class="clause"><h2>7. Contact</h2><p>To request a refund: desmondkiprotich37@gmail.com, including your Purchase ID from your receipt.</p></div>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
 </section>
 
 <div id="site-footer"></div>
@@ -41,7 +46,6 @@
     <a href="checkout.html" class="block text-center w-full chip-cart py-3 nav-link">Checkout</a>
   </div>
 </div>
-
 <div id="loginGate" class="fixed inset-0 bg-ink/70 hidden items-center justify-center z-50 p-6">
   <div class="bg-cream max-w-sm w-full p-8 border border-sand">
     <h3 class="font-serif font-semibold text-xl mb-2">Sign in to continue</h3>
@@ -54,5 +58,5 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('refund-policy.html'); renderFooter();</script>
 </body></html>

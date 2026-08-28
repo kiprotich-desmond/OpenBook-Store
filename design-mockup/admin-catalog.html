@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Catalog Overview</title><script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+
+<header class="border-b border-sand bg-ink text-cream">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+    <span class="font-logo text-lg">OpenBook Store — Admin</span>
+    <nav class="flex gap-5 text-xs font-mono">
+      <a href="admin.html" class="hover:text-gold">Upload Book</a>
+      <a href="admin-sales.html" class="hover:text-gold">Sales &amp; Receipts</a>
+      <a href="admin-catalog.html" class="text-gold">Catalog Overview</a>
+      <a href="index.html" class="hover:text-gold">View Site</a>
+    </nav>
+  </div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-6">Catalog Overview</h1>
+  <div id="catStats" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+</main>
+
+<script src="shared.js"></script>
+
+<script>
+if(localStorage.getItem('obs_admin')!=='1'){ location.href='admin-login.html'; }
+const byCat = {};
+books.forEach(b=>{ byCat[b.category] = (byCat[b.category]||0)+1; });
+document.getElementById('catStats').innerHTML = Object.entries(byCat).map(([c,n])=>`
+  <div class="bg-white border border-sand p-4"><p class="font-mono text-xs text-rust">${c}</p><p class="font-serif font-semibold text-2xl">${n}</p></div>`).join('')
+  + `<div class="chip-fill p-4"><p class="font-mono text-xs">TOTAL TITLES</p><p class="font-serif font-semibold text-2xl">${books.length}</p></div>`;
+</script>
+
+</body></html>

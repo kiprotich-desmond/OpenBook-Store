@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+
+<div class="min-h-screen flex items-center justify-center bg-ink">
+  <div class="bg-cream max-w-sm w-full p-8 border border-sand mx-4">
+    <p class="font-logo text-rust text-lg mb-1">OpenBook Store</p>
+    <p class="text-xs text-inksoft mb-6 font-mono">Admin Console</p>
+    <div class="bg-rust/10 border border-rust text-rust text-[11px] p-3 mb-4">Demo login only. Not linked publicly. Real protection needs backend authentication.</div>
+    <form onsubmit="event.preventDefault(); localStorage.setItem('obs_admin','1'); location.href='admin.html';">
+      <input required placeholder="Admin username" class="w-full border border-sand px-4 py-3 text-sm mb-3">
+      <input required type="password" placeholder="Password" class="w-full border border-sand px-4 py-3 text-sm mb-4">
+      <button class="w-full chip-fill py-3 nav-link">Sign in to Admin</button>
+    </form>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+
+</body></html>

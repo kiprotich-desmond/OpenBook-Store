@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Careers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,21 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-3xl mx-auto px-6 py-16">
+  <span class="font-mono text-xs text-rust uppercase tracking-widest">Join us</span>
+  <h1 class="font-serif font-semibold text-3xl mt-2 mb-6">Careers</h1>
+  <p class="text-sm text-inksoft leading-relaxed mb-4">We're an early-stage, independently-run platform without funded roles yet. If you'd like to contribute to frontend, backend, or content curation, we'd love to hear from you.</p>
+  <div class="bg-white border border-sand p-6 mb-4">
+    <p class="font-serif font-semibold">Engineering Lead</p>
+    <p class="text-xs text-rust font-mono mb-2">Open · Remote</p>
+    <p class="text-sm text-inksoft">Own the backend architecture as we move from prototype to production.</p>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <div class="bg-white border border-sand p-6">
+    <p class="font-serif font-semibold">Content Curator</p>
+    <p class="text-xs text-rust font-mono mb-2">Open · Remote</p>
+    <p class="text-sm text-inksoft">Source and verify public domain and open-access titles for the catalog.</p>
+  </div>
+  <a href="contact.html" class="inline-block mt-8 chip-cart px-6 py-3 nav-link">Apply via Contact Page</a>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +61,5 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('about.html'); renderFooter();</script>
 </body></html>

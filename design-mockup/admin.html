@@ -1,76 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — OpenBook Store</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Manage Books</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-cream text-ink">
 
-  <header class="border-b border-sand bg-ink text-cream">
-    <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-      <span class="font-serif font-semibold">OpenBook Store — Admin</span>
-      <span class="text-xs text-cream/60 font-mono">Not linked publicly — bookmark this URL</span>
+<header class="border-b border-sand bg-ink text-cream">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+    <span class="font-logo text-lg">OpenBook Store — Admin</span>
+    <nav class="flex gap-5 text-xs font-mono">
+      <a href="admin.html" class="text-gold">Upload Book</a>
+      <a href="admin-sales.html" class="hover:text-gold">Sales &amp; Receipts</a>
+      <a href="admin-catalog.html" class="hover:text-gold">Catalog Overview</a>
+      <a href="index.html" class="hover:text-gold">View Site</a>
+    </nav>
+  </div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-10">
+  <div class="bg-rust/10 border border-rust text-rust text-xs p-4 mb-8">Demo admin — real deployment needs server-side auth and storage.</div>
+  <h1 class="font-serif font-semibold text-2xl mb-6">Upload a Book</h1>
+  <form id="bookForm" class="grid md:grid-cols-2 gap-4 bg-white border border-sand p-6">
+    <input required id="f_title" placeholder="Title" class="border border-sand px-4 py-3 text-sm md:col-span-2">
+    <input required id="f_author" placeholder="Author" class="border border-sand px-4 py-3 text-sm">
+    <input required id="f_year" type="number" placeholder="Publication year" class="border border-sand px-4 py-3 text-sm">
+    <input required id="f_pages" type="number" placeholder="Number of pages" class="border border-sand px-4 py-3 text-sm">
+    <input required id="f_category" placeholder="Category" class="border border-sand px-4 py-3 text-sm">
+    <textarea id="f_desc" placeholder="Description" rows="3" class="border border-sand px-4 py-3 text-sm md:col-span-2"></textarea>
+    <label class="flex items-center gap-2 text-sm md:col-span-2"><input type="checkbox" id="f_free" onchange="document.getElementById('f_price').disabled=this.checked; document.getElementById('f_price').value=this.checked?'':document.getElementById('f_price').value;"> Mark as Free Tier</label>
+    <input id="f_price" type="number" min="0" step="0.5" placeholder="Price (USD)" class="border border-sand px-4 py-3 text-sm">
+    <input id="f_oldprice" type="number" min="0" step="0.5" placeholder="Original price (if discounted)" class="border border-sand px-4 py-3 text-sm">
+    <div class="md:col-span-2">
+      <label class="text-xs text-inksoft block mb-1">Cover image (select 1 file)</label>
+      <input id="f_cover" type="file" accept="image/*" class="text-sm">
     </div>
-  </header>
+    <button class="chip-cart px-6 py-3 nav-link md:col-span-2">Add Book</button>
+  </form>
+  <h2 class="font-serif font-semibold text-xl mt-12 mb-4">Uploaded Books (this browser only)</h2>
+  <div id="adminList" class="space-y-3"></div>
+</main>
 
-  <main class="max-w-4xl mx-auto px-6 py-10">
-    <div class="bg-rust/10 border border-rust text-rust text-xs p-4 mb-8">
-      This page is only hidden by not being linked anywhere — it is not actually secured. Anyone with the URL can open it.
-      Real admin protection needs a login check on your backend before this goes live.
-    </div>
-
-    <h1 class="font-serif font-semibold text-2xl mb-6">Add a book</h1>
-    <form id="bookForm" class="grid md:grid-cols-2 gap-4 mb-12 bg-white border border-sand p-6">
-      <input required id="f_title" placeholder="Title" class="border border-sand px-4 py-3 text-sm">
-      <input required id="f_author" placeholder="Author" class="border border-sand px-4 py-3 text-sm">
-      <input required id="f_category" placeholder="Category (e.g. Fiction)" class="border border-sand px-4 py-3 text-sm">
-      <select id="f_tier" class="border border-sand px-4 py-3 text-sm">
-        <option value="catalog">Catalog (paid)</option>
-        <option value="library">Free Library</option>
-        <option value="offer">Discounted Offer</option>
-      </select>
-      <input id="f_price" type="number" min="0" step="0.5" placeholder="Price ($)" class="border border-sand px-4 py-3 text-sm">
-      <input id="f_oldprice" type="number" min="0" step="0.5" placeholder="Original price (if discounted)" class="border border-sand px-4 py-3 text-sm">
-      <input id="f_cover" placeholder="Cover image URL" class="border border-sand px-4 py-3 text-sm md:col-span-2">
-      <button class="bg-ink text-cream px-6 py-3 text-sm hover:bg-rust md:col-span-2">Add Book</button>
-    </form>
-
-    <h2 class="font-serif font-semibold text-xl mb-4">Uploaded books (this browser only)</h2>
-    <div id="adminList" class="space-y-3"></div>
-  </main>
+<script src="shared.js"></script>
 
 <script>
-  let adminBooks = JSON.parse(localStorage.getItem('obs_admin_books') || '[]');
-
-  function renderList(){
-    document.getElementById('adminList').innerHTML = adminBooks.map((b,i)=>`
-      <div class="flex justify-between items-center bg-white border border-sand p-4 text-sm">
-        <div>
-          <p class="font-serif font-semibold">${b.title} <span class="text-inksoft font-normal">— ${b.author}</span></p>
-          <p class="text-xs text-inksoft font-mono">${b.category} · ${b.tier} · $${b.price}${b.oldPrice ? ' (was $'+b.oldPrice+')' : ''}</p>
-        </div>
-        <button onclick="removeBook(${i})" class="text-rust text-xs">Remove</button>
-      </div>`).join('') || '<p class="text-inksoft text-sm">No books added yet.</p>';
-  }
-
-  document.getElementById('bookForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    adminBooks.push({
-      title: f_title.value, author: f_author.value, category: f_category.value,
-      tier: f_tier.value, price: parseFloat(f_price.value) || 0,
-      oldPrice: f_oldprice.value ? parseFloat(f_oldprice.value) : null,
-      cover: f_cover.value || 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&q=60&auto=format&fit=crop'
-    });
-    localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks));
-    this.reset(); renderList();
-  });
-
-  function removeBook(i){ adminBooks.splice(i,1); localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks)); renderList(); }
-  renderList();
+if(localStorage.getItem('obs_admin')!=='1'){ location.href='admin-login.html'; }
+let adminBooks = JSON.parse(localStorage.getItem('obs_admin_books') || '[]');
+function renderList(){
+  document.getElementById('adminList').innerHTML = adminBooks.map((b,i)=>`
+    <div class="flex justify-between items-center bg-white border border-sand p-4 text-sm">
+      <div><p class="font-semibold">${b.title} <span class="text-inksoft font-normal">— ${b.author} (${b.year})</span></p>
+      <p class="text-xs text-inksoft font-mono">${b.category} · ${b.pages}pg · ${b.free?'FREE':'$'+b.price+(b.oldPrice?' (was $'+b.oldPrice+')':'')}</p></div>
+      <button onclick="removeBook(${i})" class="text-rust text-xs">Remove</button>
+    </div>`).join('') || '<p class="text-inksoft text-sm">No books added yet.</p>';
+}
+document.getElementById('bookForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const free = document.getElementById('f_free').checked;
+  adminBooks.push({ title:f_title.value, author:f_author.value, year:f_year.value, pages:f_pages.value, category:f_category.value, desc:f_desc.value, free:free, price: free?0:(parseFloat(f_price.value)||0), oldPrice: f_oldprice.value?parseFloat(f_oldprice.value):null });
+  localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks));
+  this.reset(); renderList();
+});
+function removeBook(i){ adminBooks.splice(i,1); localStorage.setItem('obs_admin_books', JSON.stringify(adminBooks)); renderList(); }
+renderList();
 </script>
-</body>
-</html>
+
+</body></html>

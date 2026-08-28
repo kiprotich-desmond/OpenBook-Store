@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Book Details — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,15 +19,7 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
-  </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
-</section>
+<section class="max-w-4xl mx-auto px-6 py-12" id="bookDetail"></section>
 
 <div id="site-footer"></div>
 <div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
@@ -54,5 +46,32 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('catalog.html'); renderFooter();
+  const id = parseInt(new URLSearchParams(location.search).get('id'));
+  const b = books.find(x=>x.id===id);
+  if(b){
+    const priceHtml = b.oldPrice ? `<span class="line-through text-inksoft mr-2">$${b.oldPrice}</span><span class="text-rust font-semibold font-mono text-xl">$${b.price}</span>` : (b.price===0 ? '<span class="text-good font-semibold font-mono text-xl">Free</span>' : `<span class="font-semibold font-mono text-xl">$${b.price}</span>`);
+    document.getElementById('bookDetail').innerHTML = `
+    <div class="grid md:grid-cols-2 gap-10">
+      <img src="${b.cover}" class="w-full h-96 object-cover border border-sand">
+      <div>
+        <p class="font-mono text-xs text-rust uppercase mb-2">${b.category}</p>
+        <h1 class="font-serif font-semibold text-3xl mb-2">${b.title}</h1>
+        <p class="text-inksoft mb-1">by ${b.author} &middot; ${b.year}</p>
+        <p class="text-inksoft text-sm mb-4">${b.pages} pages</p>
+        <div class="mb-6">${priceHtml}</div>
+        <p class="text-sm text-inksoft leading-relaxed mb-6">${b.desc}</p>
+        <div class="border-t border-sand pt-4 mb-6">
+          <p class="text-xs font-semibold uppercase text-inksoft mb-1">About the author</p>
+          <p class="text-sm text-inksoft">${b.authorBio}</p>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="handleAdd(event, ${b.id})" class="chip-cart px-6 py-3 nav-link">Add to Cart</button>
+          <button onclick="toggleWish(event, ${b.id})" class="border border-ink px-6 py-3 nav-link">+ Wishlist</button>
+          <button onclick="toggleFav(event, ${b.id})" class="border border-ink px-4 py-3 text-lg">&#9733;</button>
+        </div>
+      </div>
+    </div>`;
+  } else { document.getElementById('bookDetail').innerHTML = '<p class="text-inksoft">Book not found.</p>'; }
+</script>
 </body></html>

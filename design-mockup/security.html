@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Security — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,18 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Security</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026</p>
+  <div class="terms-body columns-1 md:columns-2 gap-8">
+    <div class="clause"><h2>1. Encrypted Connections</h2><p>All traffic to OpenBook Store is served over HTTPS with an active SSL/TLS certificate, encrypting data in transit between your device and our servers.</p></div>
+    <div class="clause"><h2>2. Payment Security</h2><p>Payment processing is handled by a PCI-compliant third-party provider; we never store full card numbers on our own servers.</p></div>
+    <div class="clause"><h2>3. Account Protection</h2><p>Passwords are hashed, never stored in plain text. We recommend unique passwords and enabling any available two-factor options.</p></div>
+    <div class="clause"><h2>4. Admin Access Controls</h2><p>Administrative functions require authenticated login and are not exposed to public navigation.</p></div>
+    <div class="clause"><h2>5. Purchase Watermarking</h2><p>Purchased files include a light embedded identifier to deter unauthorized redistribution, without affecting readability.</p></div>
+    <div class="clause"><h2>6. Reporting a Vulnerability</h2><p>If you discover a security issue, please report it responsibly to desmondkiprotich37@gmail.com before public disclosure.</p></div>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +58,5 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('security.html'); renderFooter();</script>
 </body></html>

@@ -1,31 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catalog — OpenBook Store</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalog — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-cream text-ink">
-
 <div id="splash">
-  <div class="book-anim"><div class="cover left"></div><div class="cover right"></div></div>
+  <div class="fanbook">
+    <div class="base"></div>
+    <div class="leaf" style="--ang:-55deg;"></div>
+    <div class="leaf" style="--ang:-30deg;"></div>
+    <div class="leaf" style="--ang:-8deg;"></div>
+    <div class="leaf" style="--ang:15deg;"></div>
+    <div class="leaf" style="--ang:38deg;"></div>
+  </div>
   <span class="brandmark">OpenBook Store</span>
 </div>
 
 <div id="site-header"></div>
 
-<section class="max-w-6xl mx-auto px-6 py-12">
+<section class="max-w-6xl mx-auto px-6 py-10">
   <h1 class="font-serif font-semibold text-3xl mb-2">Full Catalog</h1>
-  <p class="text-inksoft text-sm mb-8">Every title currently available — public domain, open access, and licensed.</p>
+  <p class="text-inksoft text-sm mb-6">Every title currently available.</p>
+  <input id="searchBox" placeholder="Search by title or author..." class="w-full max-w-md border border-sand px-4 py-3 text-sm mb-6">
   <div id="catFilters" class="flex gap-2 flex-wrap mb-8"></div>
   <div id="catalogGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
 </section>
 
 <div id="site-footer"></div>
-
 <div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
   <div class="flex justify-between items-center p-5 border-b border-sand">
     <span class="font-serif font-semibold">Your Cart</span>
@@ -34,17 +36,32 @@
   <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
   <div class="p-5 border-t border-sand">
     <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
-    <button onclick="checkout()" class="w-full bg-rust text-cream py-3 nav-link hover:bg-rustdeep">Checkout</button>
+    <a href="checkout.html" class="block text-center w-full chip-cart py-3 nav-link">Checkout</a>
+  </div>
+</div>
+
+<div id="loginGate" class="fixed inset-0 bg-ink/70 hidden items-center justify-center z-50 p-6">
+  <div class="bg-cream max-w-sm w-full p-8 border border-sand">
+    <h3 class="font-serif font-semibold text-xl mb-2">Sign in to continue</h3>
+    <p class="text-xs text-inksoft mb-6">This title is paid. Create an account or sign in to add it to your cart.</p>
+    <button onclick="fakeLogin('Google')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Google</button>
+    <button onclick="fakeLogin('Facebook')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Facebook</button>
+    <button onclick="fakeLogin('Email')" class="w-full chip-fill py-3 text-sm mb-3">Continue with Email</button>
+    <button onclick="hideLoginGate()" class="w-full text-xs text-inksoft">Cancel</button>
   </div>
 </div>
 
 <script src="shared.js"></script>
-<script>
-  renderHeader('catalog.html'); renderFooter();
+<script>renderHeader('catalog.html'); renderFooter();
+  const params = new URLSearchParams(location.search);
   const cats = ['All', ...new Set(books.map(b=>b.category))];
   document.getElementById('catFilters').innerHTML = cats.map(c=>`<button onclick="filterCat('${c}')" class="border border-sand px-4 py-1.5 nav-link hover:border-rust hover:text-rust">${c}</button>`).join('');
-  function filterCat(c){ document.getElementById('catalogGrid').innerHTML = books.filter(b=> c==='All'||b.category===c).map(bookCard).join(''); }
+  function filterCat(c){
+    const q = document.getElementById('searchBox').value.toLowerCase();
+    document.getElementById('catalogGrid').innerHTML = books.filter(b=> (c==='All'||b.category===c) && (b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q))).map(bookCard).join('');
+  }
+  document.getElementById('searchBox').addEventListener('input', ()=>filterCat('All'));
+  if(params.get('q')) document.getElementById('searchBox').value = params.get('q');
   filterCat('All');
 </script>
-</body>
-</html>
+</body></html>

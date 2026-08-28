@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Accessibility Statement — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,18 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Accessibility Statement</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026</p>
+  <div class="terms-body columns-1 md:columns-2 gap-8">
+    <div class="clause"><h2>1. Our Commitment</h2><p>OpenBook Store aims to be usable by people of all abilities, in line with WCAG 2.1 AA guidelines, as our platform serves an international audience.</p></div>
+    <div class="clause"><h2>2. Design Choices</h2><p>High-contrast text on a cream background, clear typographic hierarchy, and sharp, legible layout are chosen with readability in mind.</p></div>
+    <div class="clause"><h2>3. Keyboard Navigation</h2><p>All interactive elements — nav links, buttons, forms — are reachable and operable via standard keyboard navigation.</p></div>
+    <div class="clause"><h2>4. Screen Readers</h2><p>Images include descriptive alt text; forms include associated labels.</p></div>
+    <div class="clause"><h2>5. Ongoing Work</h2><p>Accessibility auditing is ongoing as the platform moves from prototype to production.</p></div>
+    <div class="clause"><h2>6. Feedback</h2><p>If you encounter an accessibility barrier, contact desmondkiprotich37@gmail.com and we will address it.</p></div>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +58,5 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('accessibility.html'); renderFooter();</script>
 </body></html>

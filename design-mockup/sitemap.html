@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitemap — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+<div id="splash">
+  <div class="fanbook">
+    <div class="base"></div>
+    <div class="leaf" style="--ang:-55deg;"></div>
+    <div class="leaf" style="--ang:-30deg;"></div>
+    <div class="leaf" style="--ang:-8deg;"></div>
+    <div class="leaf" style="--ang:15deg;"></div>
+    <div class="leaf" style="--ang:38deg;"></div>
+  </div>
+  <span class="brandmark">OpenBook Store</span>
+</div>
+
+<div id="site-header"></div>
+
+<section class="max-w-2xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-6">Sitemap</h1>
+  <div><a href="index.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Home</a><a href="catalog.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Catalog</a><a href="library.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Free Library</a><a href="offers.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Offers</a><a href="wishlist.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Wishlist</a><a href="favourites.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Favourites</a><a href="my-library.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">My Library</a><a href="book.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Book Detail</a><a href="reader.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Reader</a><a href="search-results.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Search Results</a><a href="category.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Category</a><a href="checkout.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Checkout</a><a href="receipt.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Receipt</a><a href="order-history.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Order History</a><a href="account.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">My Account</a><a href="about.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">About</a><a href="leadership.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Leadership</a><a href="careers.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Careers</a><a href="press.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Press</a><a href="faq.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">FAQ</a><a href="help-center.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Help Center</a><a href="contact.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Contact</a><a href="terms.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Terms & Conditions</a><a href="privacy.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Privacy Policy</a><a href="licensing.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Content Licensing</a><a href="refund-policy.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Refund Policy</a><a href="cookie-policy.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Cookie Policy</a><a href="accessibility.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Accessibility</a><a href="security.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Security</a><a href="how-it-works.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">How It Works</a><a href="partners.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Partners</a><a href="sitemap.html" class="block text-sm text-inksoft hover:text-rust py-2 border-b border-sand">Sitemap</a></div>
+</section>
+
+<div id="site-footer"></div>
+<div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
+  <div class="flex justify-between items-center p-5 border-b border-sand">
+    <span class="font-serif font-semibold">Your Cart</span>
+    <button onclick="toggleCart()" class="text-inksoft">Close</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+  <div class="p-5 border-t border-sand">
+    <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
+    <a href="checkout.html" class="block text-center w-full chip-cart py-3 nav-link">Checkout</a>
+  </div>
+</div>
+
+<div id="loginGate" class="fixed inset-0 bg-ink/70 hidden items-center justify-center z-50 p-6">
+  <div class="bg-cream max-w-sm w-full p-8 border border-sand">
+    <h3 class="font-serif font-semibold text-xl mb-2">Sign in to continue</h3>
+    <p class="text-xs text-inksoft mb-6">This title is paid. Create an account or sign in to add it to your cart.</p>
+    <button onclick="fakeLogin('Google')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Google</button>
+    <button onclick="fakeLogin('Facebook')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Facebook</button>
+    <button onclick="fakeLogin('Email')" class="w-full chip-fill py-3 text-sm mb-3">Continue with Email</button>
+    <button onclick="hideLoginGate()" class="w-full text-xs text-inksoft">Cancel</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>renderHeader('sitemap.html'); renderFooter();</script>
+</body></html>

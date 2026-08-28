@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact &amp; Help — OpenBook Store</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact & Help — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-cream text-ink">
-
 <div id="splash">
-  <div class="book-anim"><div class="cover left"></div><div class="cover right"></div></div>
+  <div class="fanbook">
+    <div class="base"></div>
+    <div class="leaf" style="--ang:-55deg;"></div>
+    <div class="leaf" style="--ang:-30deg;"></div>
+    <div class="leaf" style="--ang:-8deg;"></div>
+    <div class="leaf" style="--ang:15deg;"></div>
+    <div class="leaf" style="--ang:38deg;"></div>
+  </div>
   <span class="brandmark">OpenBook Store</span>
 </div>
 
@@ -23,35 +25,45 @@
     <h1 class="font-serif font-semibold text-3xl mt-2 mb-6">Get in touch</h1>
     <p class="text-sm text-inksoft mb-2">Email: <span class="font-mono">desmondkiprotich37@gmail.com</span></p>
     <p class="text-sm text-inksoft mb-6">Phone: <span class="font-mono">+245 742 118 992</span></p>
-    <div class="flex gap-3 mb-10">
-      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">X</a>
-      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">IG</a>
-      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">FB</a>
-      <a href="#" class="w-9 h-9 border border-sand flex items-center justify-center hover:border-rust hover:text-rust">in</a>
-    </div>
-    <div id="faq">
-      <h2 class="font-serif font-semibold text-lg mb-3 border-t border-sand pt-6">Frequently asked</h2>
-      <div class="space-y-4 text-sm">
-        <div><p class="font-semibold">Are free books really free?</p><p class="text-inksoft">Yes — public domain and open-access titles require no payment or account.</p></div>
-        <div><p class="font-semibold">Can I get a refund?</p><p class="text-inksoft">See our Terms &amp; Conditions for the refund policy on paid titles.</p></div>
-        <div><p class="font-semibold">How do I report a broken download?</p><p class="text-inksoft">Email us with the book title and we'll fix it promptly.</p></div>
-      </div>
+    <div class="flex gap-3">
+      <a href="#" class="w-9 h-9 chip-fill flex items-center justify-center">X</a>
+      <a href="#" class="w-9 h-9 chip-fill flex items-center justify-center">IG</a>
+      <a href="#" class="w-9 h-9 chip-fill flex items-center justify-center">FB</a>
+      <a href="#" class="w-9 h-9 chip-fill flex items-center justify-center">in</a>
     </div>
   </div>
-  <form onsubmit="event.preventDefault(); alert('Message sent — we will reply by email.')" class="space-y-3 bg-white border border-sand p-6 h-fit">
-    <input required placeholder="Your name" class="w-full border border-sand bg-cream px-4 py-3 text-sm">
-    <input required type="email" placeholder="Your email" class="w-full border border-sand bg-cream px-4 py-3 text-sm">
-    <select class="w-full border border-sand bg-cream px-4 py-3 text-sm">
-      <option>General question</option><option>Report a problem</option><option>Leadership / partnership</option><option>Careers</option>
-    </select>
-    <textarea required placeholder="Message" rows="5" class="w-full border border-sand bg-cream px-4 py-3 text-sm"></textarea>
-    <button class="bg-ink text-cream px-6 py-3 nav-link hover:bg-rust w-full">Send Message</button>
+  <form onsubmit="event.preventDefault(); alert('Message sent (demo) — we will reply by email.')" class="space-y-3 bg-white border border-sand p-6 h-fit">
+    <input required type="email" placeholder="Your email" class="w-full border border-sand px-4 py-3 text-sm">
+    <input required placeholder="Subject" class="w-full border border-sand px-4 py-3 text-sm">
+    <textarea required placeholder="Message" rows="5" class="w-full border border-sand px-4 py-3 text-sm"></textarea>
+    <button class="chip-fill px-6 py-3 nav-link w-full">Send Message</button>
   </form>
 </section>
 
 <div id="site-footer"></div>
+<div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
+  <div class="flex justify-between items-center p-5 border-b border-sand">
+    <span class="font-serif font-semibold">Your Cart</span>
+    <button onclick="toggleCart()" class="text-inksoft">Close</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+  <div class="p-5 border-t border-sand">
+    <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
+    <a href="checkout.html" class="block text-center w-full chip-cart py-3 nav-link">Checkout</a>
+  </div>
+</div>
+
+<div id="loginGate" class="fixed inset-0 bg-ink/70 hidden items-center justify-center z-50 p-6">
+  <div class="bg-cream max-w-sm w-full p-8 border border-sand">
+    <h3 class="font-serif font-semibold text-xl mb-2">Sign in to continue</h3>
+    <p class="text-xs text-inksoft mb-6">This title is paid. Create an account or sign in to add it to your cart.</p>
+    <button onclick="fakeLogin('Google')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Google</button>
+    <button onclick="fakeLogin('Facebook')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Facebook</button>
+    <button onclick="fakeLogin('Email')" class="w-full chip-fill py-3 text-sm mb-3">Continue with Email</button>
+    <button onclick="hideLoginGate()" class="w-full text-xs text-inksoft">Cancel</button>
+  </div>
+</div>
 
 <script src="shared.js"></script>
 <script>renderHeader('contact.html'); renderFooter();</script>
-</body>
-</html>
+</body></html>

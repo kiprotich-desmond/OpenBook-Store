@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Sales & Receipts</title><script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+
+<header class="border-b border-sand bg-ink text-cream">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+    <span class="font-logo text-lg">OpenBook Store — Admin</span>
+    <nav class="flex gap-5 text-xs font-mono">
+      <a href="admin.html" class="hover:text-gold">Upload Book</a>
+      <a href="admin-sales.html" class="text-gold">Sales &amp; Receipts</a>
+      <a href="admin-catalog.html" class="hover:text-gold">Catalog Overview</a>
+      <a href="index.html" class="hover:text-gold">View Site</a>
+    </nav>
+  </div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-2">Sales &amp; Receipts</h1>
+  <p class="text-sm text-inksoft mb-6">Revenue so far: <span id="totalRev" class="font-mono font-semibold text-rust"></span></p>
+  <div id="salesList" class="space-y-2"></div>
+</main>
+
+<script src="shared.js"></script>
+
+<script>
+if(localStorage.getItem('obs_admin')!=='1'){ location.href='admin-login.html'; }
+const sales = JSON.parse(localStorage.getItem('obs_sales')||'[]');
+document.getElementById('totalRev').textContent = '$' + sales.reduce((s,x)=>s+x.amount,0).toFixed(2);
+document.getElementById('salesList').innerHTML = sales.length ? sales.slice().reverse().map(s=>`
+  <div class="flex justify-between bg-white border border-sand p-3 text-sm">
+    <span>${s.book}</span><span class="font-mono">$${s.amount}</span><span class="text-xs text-inksoft">${new Date(s.date).toLocaleString()}</span>
+  </div>`).join('') : '<p class="text-inksoft text-sm">No sales yet.</p>';
+</script>
+
+</body></html>

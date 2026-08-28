@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Cookie Policy — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,20 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Cookie Policy</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026</p>
+  <div class="terms-body columns-1 md:columns-2 gap-8">
+    <div class="clause"><h2>1. What Cookies We Use</h2><p>OpenBook Store uses browser local storage (functionally similar to cookies) to remember your cart, wishlist, and favourites between visits on the same device.</p></div>
+    <div class="clause"><h2>2. Essential Storage</h2><p>Cart and session data is essential for the store to function and cannot be disabled without breaking checkout.</p></div>
+    <div class="clause"><h2>3. No Third-Party Ad Tracking</h2><p>We do not use advertising or cross-site tracking cookies.</p></div>
+    <div class="clause"><h2>4. Analytics</h2><p>A future production version may use privacy-respecting analytics to understand aggregate usage; this policy will be updated accordingly.</p></div>
+    <div class="clause"><h2>5. Managing Storage</h2><p>You can clear local storage at any time through your browser settings; this will reset your cart, wishlist, and favourites.</p></div>
+    <div class="clause"><h2>6. International Users</h2><p>Where required by regional law (e.g., EU ePrivacy rules), we will present a cookie consent banner in the production release.</p></div>
+    <div class="clause"><h2>7. Changes</h2><p>This policy may be updated as functionality changes. Continued use constitutes acceptance.</p></div>
+    <div class="clause"><h2>8. Contact</h2><p>Questions: desmondkiprotich37@gmail.com.</p></div>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +60,5 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('cookie-policy.html'); renderFooter();</script>
 </body></html>

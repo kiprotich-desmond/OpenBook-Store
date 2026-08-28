@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Checkout — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,17 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
-  </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+<section class="max-w-3xl mx-auto px-6 py-12">
+  <h1 class="font-serif font-semibold text-3xl mb-6">Billing Details</h1>
+  <div class="bg-rust/10 border border-rust text-rust text-xs p-4 mb-6">Demo checkout — no real payment is processed. A live version needs Stripe (or similar) wired to a real backend.</div>
+  <form onsubmit="event.preventDefault(); simulatePurchase();" class="grid md:grid-cols-2 gap-4 bg-white border border-sand p-6">
+    <input required placeholder="Full name" class="border border-sand px-4 py-3 text-sm md:col-span-2">
+    <input required type="email" placeholder="Email (receipt sent here)" class="border border-sand px-4 py-3 text-sm md:col-span-2">
+    <input required placeholder="Card number" class="border border-sand px-4 py-3 text-sm md:col-span-2">
+    <input required placeholder="Expiry MM/YY" class="border border-sand px-4 py-3 text-sm">
+    <input required placeholder="CVC" class="border border-sand px-4 py-3 text-sm">
+    <button class="chip-cart px-6 py-3 nav-link md:col-span-2">Complete Purchase</button>
+  </form>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +57,20 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('catalog.html'); renderFooter();
+  function simulatePurchase(){
+    if(!cart.length){ alert('Your cart is empty.'); return; }
+    owned = [...new Set([...owned, ...cart])];
+    save('obs_owned', owned);
+    const sales = JSON.parse(localStorage.getItem('obs_sales')||'[]');
+    cart.forEach(id=>{
+      const b = books.find(x=>x.id===id);
+      sales.push({book:b.title, amount:b.price, date:new Date().toISOString()});
+    });
+    localStorage.setItem('obs_sales', JSON.stringify(sales));
+    cart = []; save('obs_cart', cart);
+    alert('Purchase complete! A confirmation and PDF would be emailed in the live version. View your receipt next.');
+    location.href = 'receipt.html';
+  }
+</script>
 </body></html>

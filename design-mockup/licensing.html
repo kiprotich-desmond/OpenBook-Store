@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Licensing — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+<div id="splash">
+  <div class="fanbook">
+    <div class="base"></div>
+    <div class="leaf" style="--ang:-55deg;"></div>
+    <div class="leaf" style="--ang:-30deg;"></div>
+    <div class="leaf" style="--ang:-8deg;"></div>
+    <div class="leaf" style="--ang:15deg;"></div>
+    <div class="leaf" style="--ang:38deg;"></div>
+  </div>
+  <span class="brandmark">OpenBook Store</span>
+</div>
+
+<div id="site-header"></div>
+
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Content Licensing</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026</p>
+  <div class="terms-body columns-1 md:columns-2 gap-8"><div class="clause"><h2>1. Overview</h2><p>This page explains the licensing basis for every category of content distributed through OpenBook Store.</p></div><div class="clause"><h2>2. Public Domain Works</h2><p>Titles whose copyright has expired under the law of their country of origin, or which were never copyrighted, sourced from Project Gutenberg, the Internet Archive, and HathiTrust.</p></div><div class="clause"><h2>3. Open-Access Research</h2><p>Papers published under open licenses (commonly CC-BY or CC-BY-SA) from sources such as arXiv, PubMed Central, and DOAJ, each retaining its original attribution requirements.</p></div><div class="clause"><h2>4. Licensed Titles</h2><p>Content distributed under a direct agreement with the rights holder. The specific terms of each license are displayed on that title's detail page.</p></div><div class="clause"><h2>5. Original Titles</h2><p>Content created for and published exclusively through OpenBook Store under agreement with the author.</p></div><div class="clause"><h2>6. Attribution Requirements</h2><p>Where a source license requires attribution (e.g., CC-BY), that attribution is displayed on the title's detail page and must be preserved in any permitted redistribution.</p></div><div class="clause"><h2>7. What Purchase Does Not Grant</h2><p>Purchasing a title does not transfer copyright or grant redistribution, resale, translation, or derivative-work rights beyond what the source license or your personal reading license allows.</p></div><div class="clause"><h2>8. Reporting a Licensing Concern</h2><p>If you believe a title is listed in error or without proper rights, contact desmondkiprotich37@gmail.com immediately and we will investigate and remove the listing if warranted.</p></div><div class="clause"><h2>9. Changes to Licensing Terms</h2><p>Individual title licenses may be updated if the underlying source license changes. This will be reflected on the affected title's page.</p></div></div>
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
+</section>
+
+<div id="site-footer"></div>
+<div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
+  <div class="flex justify-between items-center p-5 border-b border-sand">
+    <span class="font-serif font-semibold">Your Cart</span>
+    <button onclick="toggleCart()" class="text-inksoft">Close</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+  <div class="p-5 border-t border-sand">
+    <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
+    <a href="checkout.html" class="block text-center w-full chip-cart py-3 nav-link">Checkout</a>
+  </div>
+</div>
+
+<div id="loginGate" class="fixed inset-0 bg-ink/70 hidden items-center justify-center z-50 p-6">
+  <div class="bg-cream max-w-sm w-full p-8 border border-sand">
+    <h3 class="font-serif font-semibold text-xl mb-2">Sign in to continue</h3>
+    <p class="text-xs text-inksoft mb-6">This title is paid. Create an account or sign in to add it to your cart.</p>
+    <button onclick="fakeLogin('Google')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Google</button>
+    <button onclick="fakeLogin('Facebook')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Facebook</button>
+    <button onclick="fakeLogin('Email')" class="w-full chip-fill py-3 text-sm mb-3">Continue with Email</button>
+    <button onclick="hideLoginGate()" class="w-full text-xs text-inksoft">Cancel</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>renderHeader('licensing.html'); renderFooter();</script>
+</body></html>

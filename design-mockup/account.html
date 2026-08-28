@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>My Account — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,15 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-2xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-6">My Account</h1>
+  <div id="acctStatus" class="mb-8"></div>
+  <div class="bg-white border border-sand p-6 space-y-3">
+    <div class="flex justify-between text-sm border-b border-sand pb-2"><span class="text-inksoft">Books owned</span><span id="acctOwned" class="font-mono"></span></div>
+    <div class="flex justify-between text-sm border-b border-sand pb-2"><span class="text-inksoft">Wishlist items</span><span id="acctWish" class="font-mono"></span></div>
+    <div class="flex justify-between text-sm"><span class="text-inksoft">Favourites</span><span id="acctFav" class="font-mono"></span></div>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <a href="order-history.html" class="inline-block mt-6 border border-ink px-6 py-3 nav-link hover:bg-ink hover:text-cream">View Order History</a>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +55,12 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader(''); renderFooter();
+  document.getElementById('acctStatus').innerHTML = loggedIn
+    ? '<p class="text-sm text-good">Signed in (demo session).</p>'
+    : '<p class="text-sm text-inksoft">Not signed in. <button onclick="showLoginGate()" class="text-rust underline">Sign in</button></p>';
+  document.getElementById('acctOwned').textContent = owned.length;
+  document.getElementById('acctWish').textContent = wishlist.length;
+  document.getElementById('acctFav').textContent = favorites.length;
+</script>
 </body></html>

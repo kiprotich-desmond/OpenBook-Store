@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<script src="tw-config.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream text-ink">
+<div id="splash">
+  <div class="fanbook">
+    <div class="base"></div>
+    <div class="leaf" style="--ang:-55deg;"></div>
+    <div class="leaf" style="--ang:-30deg;"></div>
+    <div class="leaf" style="--ang:-8deg;"></div>
+    <div class="leaf" style="--ang:15deg;"></div>
+    <div class="leaf" style="--ang:38deg;"></div>
+  </div>
+  <span class="brandmark">OpenBook Store</span>
+</div>
+
+<div id="site-header"></div>
+
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="font-serif font-semibold text-2xl mb-1">Privacy Policy</h1>
+  <p class="text-xs text-inksoft mb-6 font-mono">Last updated: August 2026 &middot; Applies internationally</p>
+  <div class="terms-body columns-1 md:columns-2 gap-8"><div class="clause"><h2>1. Introduction</h2><p>This Privacy Policy explains how OpenBook Store collects, uses, and protects information when you use our Platform, wherever in the world you access it from.</p></div><div class="clause"><h2>2. Information We Collect</h2><p>Account details (name, email), purchase history, wishlist and favourites data, and any information you submit via contact or review forms.</p></div><div class="clause"><h2>3. Payment Information</h2><p>Payment card details are processed directly by our third-party, PCI-compliant payment provider. We do not store full card numbers on our own servers.</p></div><div class="clause"><h2>4. How We Use Information</h2><p>To operate your account, process purchases, deliver files, generate receipts, and respond to support requests.</p></div><div class="clause"><h2>5. Legal Basis for Processing (International Users)</h2><p>Where applicable law requires it (such as GDPR for EU/UK users), we process personal data based on contract necessity, legitimate interest, or your consent.</p></div><div class="clause"><h2>6. Cookies &amp; Local Storage</h2><p>We use browser local storage to remember your cart, wishlist, and favourites. See our separate Cookie Policy for detail.</p></div><div class="clause"><h2>7. Data Sharing</h2><p>We do not sell personal data to third parties. Limited data is shared with payment processors solely to complete transactions.</p></div><div class="clause"><h2>8. Data Retention</h2><p>Account and purchase data is retained as long as your account is active, or as required for tax and accounting purposes thereafter.</p></div><div class="clause"><h2>9. International Data Transfers</h2><p>Because OpenBook Store serves an international audience, data may be processed in a country other than your own. We take reasonable steps to protect data in line with this policy regardless of location.</p></div><div class="clause"><h2>10. Your Rights</h2><p>Depending on your jurisdiction, you may have rights to access, correct, export, or delete your personal data. Contact us to exercise these rights.</p></div><div class="clause"><h2>11. Children's Privacy</h2><p>The Platform is not directed at children, and we do not knowingly collect personal data from children under the age applicable in their jurisdiction.</p></div><div class="clause"><h2>12. Email Communications</h2><p>We send transactional emails (receipts, account notices) and, only with your consent, occasional updates. You may opt out of non-essential emails at any time.</p></div><div class="clause"><h2>13. Data Security</h2><p>We use encryption in transit (SSL/TLS) and access controls to protect data. See our separate Security page for detail.</p></div><div class="clause"><h2>14. Third-Party Sign-In Data</h2><p>If you sign in via Google or Facebook, we receive basic profile information (name, email) as permitted by your settings with that provider.</p></div><div class="clause"><h2>15. Changes to This Policy</h2><p>We may update this Privacy Policy periodically. Material changes will be reflected by an updated "Last updated" date.</p></div><div class="clause"><h2>16. Contact</h2><p>Privacy questions or data requests: desmondkiprotich37@gmail.com.</p></div></div>
+  <a href="index.html" class="inline-block mt-10 text-xs text-inksoft hover:text-rust">&larr; Back to store</a>
+</section>
+
+<div id="site-footer"></div>
+<div id="cartPanel" class="fixed top-0 right-0 h-full w-80 bg-cream border-l border-sand shadow-xl translate-x-full transition-transform z-50 flex flex-col">
+  <div class="flex justify-between items-center p-5 border-b border-sand">
+    <span class="font-serif font-semibold">Your Cart</span>
+    <button onclick="toggleCart()" class="text-inksoft">Close</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+  <div class="p-5 border-t border-sand">
+    <div class="flex justify-between text-sm mb-3"><span>Total</span><span id="cartTotal" class="font-semibold font-mono">$0.00</span></div>
+    <a href="checkout.html" class="block text-center w-full chip-cart py-3 nav-link">Checkout</a>
+  </div>
+</div>
+
+<div id="loginGate" class="fixed inset-0 bg-ink/70 hidden items-center justify-center z-50 p-6">
+  <div class="bg-cream max-w-sm w-full p-8 border border-sand">
+    <h3 class="font-serif font-semibold text-xl mb-2">Sign in to continue</h3>
+    <p class="text-xs text-inksoft mb-6">This title is paid. Create an account or sign in to add it to your cart.</p>
+    <button onclick="fakeLogin('Google')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Google</button>
+    <button onclick="fakeLogin('Facebook')" class="w-full border border-sand py-3 text-sm mb-2 hover:border-rust">Continue with Facebook</button>
+    <button onclick="fakeLogin('Email')" class="w-full chip-fill py-3 text-sm mb-3">Continue with Email</button>
+    <button onclick="hideLoginGate()" class="w-full text-xs text-inksoft">Cancel</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>renderHeader('privacy.html'); renderFooter();</script>
+</body></html>

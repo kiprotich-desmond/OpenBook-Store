@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Search Results — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,10 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
-  </div>
-</section>
 <section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <h1 class="font-serif font-semibold text-2xl mb-2">Search Results</h1>
+  <p id="searchSummary" class="text-inksoft text-sm mb-8"></p>
+  <div id="resultsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +50,10 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('catalog.html'); renderFooter();
+  const q = (new URLSearchParams(location.search).get('q')||'').toLowerCase();
+  const results = books.filter(b=>b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q));
+  document.getElementById('searchSummary').textContent = `${results.length} result(s) for "${q}"`;
+  document.getElementById('resultsGrid').innerHTML = results.map(bookCard).join('') || '<p class="text-inksoft text-sm col-span-full">No matches. Try a different search.</p>';
+</script>
 </body></html>

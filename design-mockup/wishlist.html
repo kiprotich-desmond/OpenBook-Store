@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Wishlist — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,18 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
-  </div>
-</section>
 <section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <h1 class="font-serif font-semibold text-3xl mb-2">Your Wishlist</h1>
+  <p class="text-inksoft text-sm mb-6">Share this page so a friend can buy a book for you.</p>
+  <div class="flex flex-wrap gap-3 mb-8">
+    <button onclick="copyShareLink()" class="border border-ink px-4 py-2 nav-link hover:bg-ink hover:text-cream">Copy Share Link</button>
+    <button onclick="document.getElementById('qr').classList.toggle('hidden')" class="border border-ink px-4 py-2 nav-link hover:bg-ink hover:text-cream">Show QR Code</button>
+  </div>
+  <div id="qr" class="hidden mb-8 p-4 bg-white border border-sand w-fit">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=OpenBookStore-Wishlist-Demo" alt="Wishlist QR code">
+    <p class="text-[10px] text-inksoft mt-2 max-w-[140px]">Demo QR — a real shareable link needs a backend account system.</p>
+  </div>
+  <div id="wishGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +58,12 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('wishlist.html'); renderFooter();
+  document.getElementById('wishGrid').innerHTML = books.filter(b=>wishlist.includes(b.id)).map(bookCard).join('') || '<p class="text-inksoft text-sm col-span-full">Your wishlist is empty — tap "+ Wish" on any book to add it here.</p>';
+  function copyShareLink(){
+    const link = location.origin + location.pathname.replace('wishlist.html','') + 'wishlist.html?u=demo-user';
+    navigator.clipboard && navigator.clipboard.writeText(link);
+    alert('Link copied (demo): ' + link + '\n\nNote: a real shareable wishlist needs a backend account system so it works on other people\'s devices too.');
+  }
+</script>
 </body></html>

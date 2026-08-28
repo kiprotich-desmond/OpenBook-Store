@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Offers — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
+<title>Reader — OpenBook Store</title><script src="https://cdn.tailwindcss.com"></script>
 <script src="tw-config.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -19,14 +19,13 @@
 
 <div id="site-header"></div>
 
-<section class="bg-ink py-12">
-  <div class="max-w-6xl mx-auto px-6">
-    <span class="text-gold font-mono text-xs tracking-widest uppercase">Limited time</span>
-    <h1 class="font-serif font-semibold text-2xl text-cream mt-2">Discounted This Week</h1>
+<section class="max-w-3xl mx-auto px-6 py-10">
+  <div id="readerHead" class="mb-6"></div>
+  <div class="bg-white border border-sand p-8 relative" style="min-height:60vh;">
+    <p id="readerWatermark" class="absolute inset-0 flex items-center justify-center text-[10px] text-inksoft/10 font-mono pointer-events-none select-none rotate-[-20deg] leading-loose text-center px-10"></p>
+    <p id="readerBody" class="text-sm leading-relaxed text-inksoft relative"></p>
   </div>
-</section>
-<section class="max-w-6xl mx-auto px-6 py-10">
-  <div id="offersGrid" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div>
+  <p class="text-[11px] text-inksoft mt-4">Demo reading pane. A live version renders the real EPUB/PDF file with this same light watermark technique, generated server-side at purchase time.</p>
 </section>
 
 <div id="site-footer"></div>
@@ -54,5 +53,13 @@
 </div>
 
 <script src="shared.js"></script>
-<script>renderHeader('offers.html'); renderFooter();document.getElementById('offersGrid').innerHTML = books.filter(b=>b.tier==='offer').map(bookCard).join('');</script>
+<script>renderHeader('my-library.html'); renderFooter();
+  const id = parseInt(new URLSearchParams(location.search).get('id'));
+  const b = books.find(x=>x.id===id);
+  if(b){
+    document.getElementById('readerHead').innerHTML = `<h1 class="font-serif font-semibold text-2xl">${b.title}</h1><p class="text-inksoft text-sm">${b.author}</p>`;
+    document.getElementById('readerBody').textContent = b.desc + ' (Full text would render here from the delivered EPUB/PDF file.)';
+    document.getElementById('readerWatermark').textContent = 'Licensed to Demo Reader · demo@example.com · Purchase ID OBS-DEMO'.repeat(6);
+  }
+</script>
 </body></html>
