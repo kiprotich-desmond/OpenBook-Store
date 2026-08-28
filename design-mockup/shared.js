@@ -49,7 +49,7 @@ let loggedIn = localStorage.getItem('obs_logged_in') === '1';
 function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
 function isFreeBook(book){ return book && book.tier === 'library'; }
 
-const eligibleCart = cart.filter(id => !isFreeBook(books.find(book => book.id === id)));
+const eligibleCart = [...new Set(cart.filter(id => !isFreeBook(books.find(book => book.id === id))))];
 if(eligibleCart.length !== cart.length){ cart = eligibleCart; save('obs_cart', cart); }
 const eligibleWishlist = wishlist.filter(id => !isFreeBook(books.find(book => book.id === id)));
 if(eligibleWishlist.length !== wishlist.length){ wishlist = eligibleWishlist; save('obs_wishlist', wishlist); }
@@ -61,6 +61,7 @@ function starBtn(id){
 
 function bookCard(b){
   const freeBook = isFreeBook(b);
+  const inCart = cart.includes(b.id);
   const priceHtml = b.oldPrice
     ? `<span class="line-through text-inksoft text-xs mr-1">$${b.oldPrice}</span><span class="text-rust font-semibold font-mono">$${b.price}</span>`
     : (b.price === 0 ? `<span class="text-good font-semibold font-mono">Free</span>` : `<span class="font-semibold font-mono">$${b.price}</span>`);
@@ -76,7 +77,7 @@ function bookCard(b){
         <span class="text-sm">${priceHtml}</span>
         <div class="flex gap-1">
           <button onclick="toggleWish(event, ${b.id})" class="text-[11px] border px-2 py-1.5 ${freeBook?'border-sand text-inksoft cursor-not-allowed':'border-ink hover:bg-ink hover:text-cream'}" ${freeBook?'disabled title="Free books cannot be wishlisted"':''}>${freeBook?'Wish unavailable':'+ Wish'}</button>
-          <button onclick="handleAdd(event, ${b.id})" class="text-[11px] px-2 py-1.5 ${freeBook?'border border-sand text-inksoft cursor-not-allowed':'chip-cart'}" ${freeBook?'disabled title="Free books do not use the cart"':''}>${freeBook?'Free access':'Add'}</button>
+          <button data-cart-id="${b.id}" data-add-label="Add" onclick="handleAdd(event, ${b.id})" class="text-[11px] px-2 py-1.5 ${freeBook||inCart?'border border-sand text-inksoft cursor-not-allowed':'chip-cart'}" ${freeBook||inCart?`disabled title="${freeBook?'Free books do not use the cart':'Already in cart'}"`:''}>${freeBook?'Free access':inCart?'In Cart':'Add'}</button>
         </div>
       </div>
     </div>
@@ -86,14 +87,26 @@ function handleAdd(e, id){
   e.preventDefault();
   const b = books.find(x=>x.id===id);
   if(isFreeBook(b)) return;
+  if(cart.includes(id)) return;
   if(b.price > 0 && !loggedIn){ showLoginGate(); return; }
-  addToCart(id);
+  if(addToCart(id)) updateCartButtons(id);
 }
 function addToCart(id){
-  if(isFreeBook(books.find(book=>book.id===id))) return;
+  if(isFreeBook(books.find(book=>book.id===id)) || cart.includes(id)) return false;
   cart.push(id); save('obs_cart', cart); updateCartUI(); openCart();
+  return true;
 }
-function removeFromCart(i){ cart.splice(i,1); save('obs_cart', cart); updateCartUI(); }
+function updateCartButtons(id){
+  const inCart = cart.includes(id);
+  document.querySelectorAll(`[data-cart-id="${id}"]`).forEach(button => {
+    button.disabled = inCart;
+    button.title = inCart ? 'Already in cart' : '';
+    button.textContent = inCart ? 'In Cart' : button.dataset.addLabel;
+    button.classList.toggle('chip-cart', !inCart);
+    ['border', 'border-sand', 'text-inksoft', 'cursor-not-allowed'].forEach(name => button.classList.toggle(name, inCart));
+  });
+}
+function removeFromCart(i){ const [id] = cart.splice(i,1); save('obs_cart', cart); updateCartUI(); updateCartButtons(id); }
 function toggleFav(e, id){ e.preventDefault();
   favorites = favorites.includes(id) ? favorites.filter(x=>x!==id) : [...favorites, id];
   save('obs_favorites', favorites);
