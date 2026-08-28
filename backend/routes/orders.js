@@ -16,7 +16,9 @@ router.post('/checkout', requireAuth, async (req, res) => {
   if (!Array.isArray(bookIds) || !bookIds.length) return res.status(400).json({ error: 'No books provided.' });
 
   const db = readDB();
-  const books = db.books.filter(b => bookIds.includes(b.id));
+  const requestedBookIds = [...new Set(bookIds)];
+  const books = db.books.filter(b => requestedBookIds.includes(b.id));
+  if (books.length !== requestedBookIds.length) return res.status(400).json({ error: 'One or more books were not found.' });
   const total = books.reduce((sum, b) => sum + b.price, 0);
 
   if (process.env.STRIPE_SECRET_KEY) {
@@ -24,9 +26,12 @@ router.post('/checkout', requireAuth, async (req, res) => {
     const intent = await stripe.paymentIntents.create({
       amount: Math.round(total * 100), // Stripe expects cents
       currency: 'usd',
-      metadata: { bookIds: bookIds.join(',') },
+      metadata: {
+        userId: String(req.user.id),
+        bookIds: books.map(b => String(b.id)).sort().join(','),
+      },
     });
-    return res.json({ mode: 'stripe', clientSecret: intent.client_secret, total });
+    return res.json({ mode: 'stripe', clientSecret: intent.client_secret, paymentIntentId: intent.id, total });
   }
 
   // Simulation mode — no real card is charged.
@@ -35,11 +40,56 @@ router.post('/checkout', requireAuth, async (req, res) => {
 
 // ---------- Confirm order (runs after payment succeeds, real or simulated) ----------
 router.post('/confirm', requireAuth, async (req, res) => {
-  const { bookIds } = req.body;
-  const db = readDB();
-  const user = db.users.find(u => u.id === req.user.id);
-  const books = db.books.filter(b => bookIds.includes(b.id));
-  if (!books.length) return res.status(400).json({ error: 'No matching books.' });
+  const { bookIds, paymentIntentId } = req.body || {};
+  if (!Array.isArray(bookIds) || !bookIds.length) return res.status(400).json({ error: 'No books provided.' });
+
+  let db = readDB();
+  let user = db.users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found.' });
+
+  const requestedBookIds = [...new Set(bookIds)];
+  let books = db.books.filter(b => requestedBookIds.includes(b.id));
+  if (books.length !== requestedBookIds.length) return res.status(400).json({ error: 'One or more books were not found.' });
+  let total = books.reduce((s, b) => s + b.price, 0);
+  let verifiedPaymentIntentId;
+
+  if (process.env.STRIPE_SECRET_KEY) {
+    if (typeof paymentIntentId !== 'string' || !paymentIntentId.trim()) {
+      return res.status(400).json({ error: 'PaymentIntent ID is required.' });
+    }
+
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    let intent;
+    try {
+      intent = await stripe.paymentIntents.retrieve(paymentIntentId.trim());
+    } catch (err) {
+      return res.status(400).json({ error: 'Unable to verify payment.' });
+    }
+
+    if (!intent) return res.status(400).json({ error: 'Unable to verify payment.' });
+
+    // Re-read immediately before verification and mutation so replay checks use current data.
+    db = readDB();
+    user = db.users.find(u => u.id === req.user.id);
+    if (!user) return res.status(404).json({ error: 'User not found.' });
+    books = db.books.filter(b => requestedBookIds.includes(b.id));
+    if (books.length !== requestedBookIds.length) return res.status(400).json({ error: 'One or more books were not found.' });
+    total = books.reduce((s, b) => s + b.price, 0);
+
+    if (intent.status !== 'succeeded') return res.status(402).json({ error: 'Payment has not succeeded.' });
+    if (intent.amount !== Math.round(total * 100)) return res.status(400).json({ error: 'Payment amount does not match order total.' });
+    if (intent.currency !== 'usd') return res.status(400).json({ error: 'Payment currency does not match checkout currency.' });
+    if (!intent.metadata || intent.metadata.userId !== String(user.id)) return res.status(403).json({ error: 'Payment does not belong to this user.' });
+
+    const confirmedBookIds = books.map(b => String(b.id)).sort().join(',');
+    const paidBookIds = [...new Set((intent.metadata.bookIds || '').split(',').filter(Boolean))].sort().join(',');
+    if (paidBookIds !== confirmedBookIds) return res.status(400).json({ error: 'Payment books do not match order books.' });
+
+    verifiedPaymentIntentId = intent.id;
+    if (db.orders.some(order => order.paymentIntentId === verifiedPaymentIntentId)) {
+      return res.status(409).json({ error: 'Payment has already been used for an order.' });
+    }
+  }
 
   const purchaseId = 'OBS-' + uuid().slice(0, 8).toUpperCase();
   const now = new Date().toISOString();
@@ -49,11 +99,12 @@ router.post('/confirm', requireAuth, async (req, res) => {
     userId: user.id,
     userEmail: user.email,
     books: books.map(b => ({ id: b.id, title: b.title, price: b.price })),
-    total: books.reduce((s, b) => s + b.price, 0),
+    total,
     date: now,
   };
+  if (verifiedPaymentIntentId) order.paymentIntentId = verifiedPaymentIntentId;
   db.orders.push(order);
-  user.owned = [...new Set([...user.owned, ...bookIds])];
+  user.owned = [...new Set([...user.owned, ...books.map(b => b.id)])];
   writeDB(db);
 
   // Real watermarking would run here against the actual purchased PDF file,
