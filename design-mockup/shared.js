@@ -139,17 +139,27 @@ function renderHeader(active){
       <div class="flex items-center gap-2">
         <a href="catalog.html" class="hidden sm:inline-block text-inksoft"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a>
         <button onclick="toggleCart()" class="chip-cart px-4 py-2 nav-link">Cart <span id="cartCount" class="ml-1">0</span></button>
+        <button class="mobile-menu-button md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation" onclick="toggleMobileMenu(this)">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
+    <nav id="mobile-menu" class="mobile-menu md:hidden" aria-label="Mobile navigation">
+      ${NAV.map(n=>`<a href="${n.href}" class="${active===n.href?'active':''}">${n.label}</a>`).join('')}
+    </nav>
   </header>
-  <nav class="tabbar md:hidden">
-    ${NAV.map(n=>`<a href="${n.href}" class="${active===n.href?'active':''}">${n.label}</a>`).join('')}
-  </nav>`;
+  `;
+}
+
+function toggleMobileMenu(button){
+  const menu = document.getElementById('mobile-menu');
+  const isOpen = menu.classList.toggle('open');
+  button.setAttribute('aria-expanded', isOpen);
 }
 
 function renderFooter(){
   document.getElementById('site-footer').innerHTML = `
-  <footer class="border-t border-sand bg-creamdim pb-16 md:pb-0">
+  <footer class="border-t border-sand bg-creamdim">
     <div class="max-w-6xl mx-auto px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-8">
       <div>
         <p class="font-serif font-semibold text-sm mb-3">Company</p>
