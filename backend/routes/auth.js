@@ -1,13 +1,35 @@
 const express = require('express');
+const { rateLimit } = require('express-rate-limit');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuid } = require('uuid');
 const { readDB, writeDB } = require('../db');
 
 const router = express.Router();
+const signupLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many signup attempts. Please try again later.' },
+});
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many login attempts. Please try again later.' },
+});
+const adminLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many admin login attempts. Please try again later.' },
+});
 
 // ---------- Real: email + password signup ----------
-router.post('/signup', async (req, res) => {
+router.post('/signup', signupLimiter, async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) return res.status(400).json({ error: 'Name, email, and password are required.' });
 
@@ -26,7 +48,7 @@ router.post('/signup', async (req, res) => {
 });
 
 // ---------- Real: email + password login ----------
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   const { email, password } = req.body;
   const db = readDB();
   const user = db.users.find(u => u.email.toLowerCase() === (email || '').toLowerCase());
@@ -40,7 +62,7 @@ router.post('/login', async (req, res) => {
 // ---------- Real: admin login ----------
 // Compares against ADMIN_USERNAME / ADMIN_PASSWORD_HASH in .env.
 // Generate a hash locally with:  node -e "console.log(require('bcryptjs').hashSync('yourpassword', 10))"
-router.post('/admin-login', async (req, res) => {
+router.post('/admin-login', adminLoginLimiter, async (req, res) => {
   const { username, password } = req.body;
   if (username !== process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD_HASH) {
     return res.status(401).json({ error: 'Invalid admin credentials.' });
