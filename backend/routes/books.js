@@ -14,8 +14,38 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
 });
+const coverTypes = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+};
 // .single('cover') enforces exactly one file for the given field name
-const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 } });
+const upload = multer({
+  storage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    if (coverTypes[extension] === file.mimetype) return cb(null, true);
+
+    const error = new Error('Invalid cover type');
+    error.code = 'INVALID_COVER_TYPE';
+    cb(error);
+  },
+});
+
+function uploadCover(req, res, next) {
+  upload.single('cover')(req, res, err => {
+    if (!err) return next();
+    if (err.code === 'INVALID_COVER_TYPE') {
+      return res.status(400).json({ error: 'Cover must be a JPG, JPEG, PNG, or WEBP image.' });
+    }
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({ error: 'Cover image must be 8 MB or smaller.' });
+    }
+    next(err);
+  });
+}
 
 // ---------- Public ----------
 router.get('/', (req, res) => {
@@ -39,7 +69,7 @@ router.get('/:id', (req, res) => {
 });
 
 // ---------- Admin only ----------
-router.post('/', requireAdmin, upload.single('cover'), (req, res) => {
+router.post('/', requireAdmin, uploadCover, (req, res) => {
   const { title, author, year, pages, category, desc, authorBio, tier, price, oldPrice } = req.body;
   if (!title || !author || !category) return res.status(400).json({ error: 'Title, author, and category are required.' });
 
@@ -65,7 +95,7 @@ router.post('/', requireAdmin, upload.single('cover'), (req, res) => {
   res.status(201).json(book);
 });
 
-router.put('/:id', requireAdmin, upload.single('cover'), (req, res) => {
+router.put('/:id', requireAdmin, uploadCover, (req, res) => {
   const db = readDB();
   const book = db.books.find(b => b.id === Number(req.params.id));
   if (!book) return res.status(404).json({ error: 'Book not found.' });
