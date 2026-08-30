@@ -47,6 +47,35 @@ function uploadCover(req, res, next) {
   });
 }
 
+const allowedTiers = new Set(['library', 'catalog', 'offer']);
+
+function parseNonNegativeNumber(value, fieldName) {
+  if ((typeof value !== 'number' && typeof value !== 'string') ||
+      (typeof value === 'string' && value.trim() === '')) {
+    return { error: `${fieldName} must be a finite number greater than or equal to 0.` };
+  }
+
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) {
+    return { error: `${fieldName} must be a finite number greater than or equal to 0.` };
+  }
+  return { value: number };
+}
+
+function parseOptionalInteger(value, fieldName, positive = false) {
+  if (value === '' || value === null) return { value: null };
+  if ((typeof value !== 'number' && typeof value !== 'string') ||
+      (typeof value === 'string' && value.trim() === '')) {
+    return { error: `${fieldName} must be ${positive ? 'a positive' : 'an'} integer.` };
+  }
+
+  const number = Number(value);
+  if (!Number.isFinite(number) || !Number.isInteger(number) || (positive && number <= 0)) {
+    return { error: `${fieldName} must be ${positive ? 'a positive' : 'an'} integer.` };
+  }
+  return { value: number };
+}
+
 // ---------- Public ----------
 router.get('/', (req, res) => {
   const db = readDB();
@@ -73,19 +102,37 @@ router.post('/', requireAdmin, uploadCover, (req, res) => {
   const { title, author, year, pages, category, desc, authorBio, tier, price, oldPrice } = req.body;
   if (!title || !author || !category) return res.status(400).json({ error: 'Title, author, and category are required.' });
 
+  const normalizedTier = tier || 'catalog';
+  if (!allowedTiers.has(normalizedTier)) return res.status(400).json({ error: 'Tier must be library, catalog, or offer.' });
+
+  const normalizedPrice = price === undefined
+    ? { value: 0 }
+    : parseNonNegativeNumber(price, 'Price');
+  if (normalizedPrice.error) return res.status(400).json({ error: normalizedPrice.error });
+
+  const normalizedOldPrice = oldPrice === undefined || oldPrice === '' || oldPrice === null
+    ? { value: null }
+    : parseNonNegativeNumber(oldPrice, 'Old price');
+  if (normalizedOldPrice.error) return res.status(400).json({ error: normalizedOldPrice.error });
+
+  const normalizedPages = pages === undefined ? { value: null } : parseOptionalInteger(pages, 'Pages', true);
+  if (normalizedPages.error) return res.status(400).json({ error: normalizedPages.error });
+
+  const normalizedYear = year === undefined ? { value: null } : parseOptionalInteger(year, 'Year');
+  if (normalizedYear.error) return res.status(400).json({ error: normalizedYear.error });
+
   const db = readDB();
   const nextId = db.books.length ? Math.max(...db.books.map(b => b.id)) + 1 : 1;
-  const isFree = tier === 'library';
 
   const book = {
     id: nextId,
     title, author,
-    year: Number(year) || null,
-    pages: Number(pages) || null,
+    year: normalizedYear.value,
+    pages: normalizedPages.value,
     category,
-    tier: tier || 'catalog',
-    price: isFree ? 0 : Number(price) || 0,
-    oldPrice: oldPrice ? Number(oldPrice) : null,
+    tier: normalizedTier,
+    price: normalizedTier === 'library' ? 0 : normalizedPrice.value,
+    oldPrice: normalizedOldPrice.value,
     desc: desc || '',
     authorBio: authorBio || '',
     cover: req.file ? `/uploads/${req.file.filename}` : null,
@@ -101,16 +148,36 @@ router.put('/:id', requireAdmin, uploadCover, (req, res) => {
   if (!book) return res.status(404).json({ error: 'Book not found.' });
 
   const { title, author, year, pages, category, desc, authorBio, tier, price, oldPrice } = req.body;
-  const isFree = tier === 'library';
+  const normalizedTier = tier === undefined ? book.tier : tier;
+  if (!allowedTiers.has(normalizedTier)) return res.status(400).json({ error: 'Tier must be library, catalog, or offer.' });
+
+  const normalizedPrice = price === undefined
+    ? { value: book.price }
+    : parseNonNegativeNumber(price, 'Price');
+  if (normalizedPrice.error) return res.status(400).json({ error: normalizedPrice.error });
+
+  const normalizedOldPrice = oldPrice === undefined
+    ? { value: book.oldPrice }
+    : oldPrice === '' || oldPrice === null
+      ? { value: null }
+      : parseNonNegativeNumber(oldPrice, 'Old price');
+  if (normalizedOldPrice.error) return res.status(400).json({ error: normalizedOldPrice.error });
+
+  const normalizedPages = pages === undefined ? { value: book.pages } : parseOptionalInteger(pages, 'Pages', true);
+  if (normalizedPages.error) return res.status(400).json({ error: normalizedPages.error });
+
+  const normalizedYear = year === undefined ? { value: book.year } : parseOptionalInteger(year, 'Year');
+  if (normalizedYear.error) return res.status(400).json({ error: normalizedYear.error });
+
   Object.assign(book, {
     title: title ?? book.title,
     author: author ?? book.author,
-    year: year ? Number(year) : book.year,
-    pages: pages ? Number(pages) : book.pages,
+    year: normalizedYear.value,
+    pages: normalizedPages.value,
     category: category ?? book.category,
-    tier: tier ?? book.tier,
-    price: isFree ? 0 : (price !== undefined ? Number(price) : book.price),
-    oldPrice: oldPrice ? Number(oldPrice) : book.oldPrice,
+    tier: normalizedTier,
+    price: normalizedTier === 'library' ? 0 : normalizedPrice.value,
+    oldPrice: normalizedOldPrice.value,
     desc: desc ?? book.desc,
     authorBio: authorBio ?? book.authorBio,
     cover: req.file ? `/uploads/${req.file.filename}` : book.cover,
