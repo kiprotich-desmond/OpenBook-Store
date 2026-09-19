@@ -9,7 +9,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, 'data', 'db.json');
+const DB_PATH = process.env.NODE_ENV === 'test' && process.env.OPENBOOK_TEST_DB_PATH
+  ? process.env.OPENBOOK_TEST_DB_PATH
+  : path.join(__dirname, 'data', 'db.json');
 
 function readDB() {
   if (!fs.existsSync(DB_PATH)) {

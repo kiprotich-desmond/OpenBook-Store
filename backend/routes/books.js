@@ -7,7 +7,9 @@ const { requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-const uploadDir = path.join(__dirname, '..', 'uploads');
+const uploadDir = process.env.NODE_ENV === 'test' && process.env.OPENBOOK_TEST_UPLOAD_DIR
+  ? process.env.OPENBOOK_TEST_UPLOAD_DIR
+  : path.join(__dirname, '..', 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
 const storage = multer.diskStorage({
